@@ -7,20 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Accounts {
-  email                   String   @unique(map: "Accounts.email_unique")
-  username                String    @unique(map: "Accounts.username_unique")
-  cssURL                  String?
-  website                 String?
-  github                  String?
-  pronouns                String?
-  updates                 Updates[]
-  tokens                  Token[]
+model Account {
+  email    String    @unique(map: "Accounts.email_unique")
+  username String    @unique(map: "Accounts.username_unique")
+  cssURL   String?
+  website  String?
+  github   String?
+  pronouns String?
+  updates  Updates[]
+  tokens   Token[]
 }
 
 model Updates {
-  id               String           @id @default(cuid())
-  postTime         DateTime?        @default(now())
+  id               String    @id @default(cuid())
+  postTime         DateTime? @default(now())
   text             String?
   attachments      String[]
   muxAssetIDs      String[]
@@ -29,12 +29,13 @@ model Updates {
   backupAssetID    String?
   backupPlaybackID String?
   isLargeVideo     Boolean?
-  Accounts         Accounts?        @relation(fields: [accountsSlackID], references: [slackID])
+  Accounts         Account? @relation(references: [username], fields: [accountUsername])
+  accountUsername  String?
 }
 
 model Token {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   userEmail String
-  user      Accounts     @relation(fields: [userEmail], references: [email])
+  user      Account @relation(fields: [userEmail], references: [email])
 }
