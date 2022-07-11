@@ -24,14 +24,9 @@ model Updates {
   postTime         DateTime? @default(now())
   text             String?
   attachments      String[]
-  muxAssetIDs      String[]
-  muxPlaybackIDs   String[]
-  muxAssetStatuses String?
-  backupAssetID    String?
-  backupPlaybackID String?
   isLargeVideo     Boolean?
-  Accounts         Account? @relation(references: [username], fields: [accountUsername])
-  accountUsername  String?
+  Accounts         Account? @relation(references: [id], fields: [accountID])
+  accountID  String?
 }
 
 model Token {

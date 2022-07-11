@@ -369,6 +369,9 @@ video.post-attachment {
   max-height: 384px;
   object-fit: contain;
 }
+.post-attachment img {
+  min-height: 150px;
+}
 video.post-attachment,
 audio.post-attachment,
 a.post-attachment:first-child:last-child {

@@ -48,10 +48,9 @@ export const getPosts = async (max = null) => {
   return await getRawPosts(max).then(posts =>
     posts
       .map(p => {
-        p.user = find(users, { username: p.accountUsername }) || {}
+        p.user = find(users, { id: p.accountID }) || {}
         return p
       })
-      .filter(p => !isEmpty(p.user))
       .map(p => transformPost(p))
   )
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Posts from '../../components/posts'
 import Input from '../../components/input'
 import { emailToPfp } from '../../lib/email'
+import { useRouter } from 'next/router'
 
 /*
 TODO
@@ -22,15 +23,13 @@ const submissionSuccessOptions = {
 }
 
 export default function Page({ link, initialData }) {
+  const router = useRouter()
+  const { id } = router.query
   const [dropping, setDropping] = useState(false)
-
   const [postData, setPostData] = useState({
     image: '',
-    name: '',
-    email: '',
     description: '',
-    club: '',
-    link: link
+    id
   })
 
   const [submissionSuccess, setSubmissionSuccess] = useState('')
@@ -39,7 +38,7 @@ export default function Page({ link, initialData }) {
     id: 1,
     user: {
       username: postData.name || 'Fiona Hackwoof',
-      avatar: emailToPfp(postData.email) || 'https://placedog.net/500'
+      avatar: emailToPfp('') || 'https://placedog.net/500'
     },
     text:
       [postData.description, postData.link].join('\n') || 'feed me (woof woof)',
@@ -47,7 +46,8 @@ export default function Page({ link, initialData }) {
       postData.image ||
         'https://lawcall.com/wp-content/uploads/2015/03/Dog-Eating.jpg'
     ],
-    postedAt: 'just now'
+    postedAt: 'just now',
+    id
   })
 
   const onDragOver = e => {
@@ -155,7 +155,7 @@ export default function Page({ link, initialData }) {
           </div>
         </div>
         <Posts
-          posts={[preview(),preview(),preview(),preview(), ...initialData]}
+          posts={[preview(), ...initialData]}
           breakpointCols={{
             10000: 2,
             1024: 1,

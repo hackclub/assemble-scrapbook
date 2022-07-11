@@ -9,6 +9,7 @@ import Video from './video'
 import Image from 'next/image'
 import Reaction from './reaction'
 import dynamic from 'next/dynamic'
+import { emailToPfp } from '../lib/email'
 const Tooltip = dynamic(() => import('react-tooltip'), { ssr: false })
 
 const imageFileTypes = ['jpg', 'jpeg', 'png', 'gif']
@@ -16,12 +17,11 @@ const imageFileTypes = ['jpg', 'jpeg', 'png', 'gif']
 const audioFileTypes = ['mp3', 'wav', 'aiff', 'm4a']
 
 function endsWithAny(suffixes, string) {
-  try{
+  try {
     return suffixes.some(function (suffix) {
       return string.endsWith(suffix)
     })
-  }
-  catch{
+  } catch {
     return false
   }
 }
@@ -55,11 +55,7 @@ const Post = ({
           data-tip
           data-for={`tip-${id}`}
           dateTime={postedAt}
-        >
-          {postedAt?.startsWith('20')
-            ? convertTimestampToDate(postedAt)
-            : postedAt}
-        </time>
+        ></time>
         <a href={slackUrl} target="_blank" rel="noopener noreferrer">
           <Tooltip
             id={`tip-${id}`}
@@ -75,30 +71,18 @@ const Post = ({
     ) : (
       <Link href="/[profile]" as={`/${user.username}`} prefetch={false}>
         <a className="post-header">
-          {user.avatar && (
-            <Image
-              loading="lazy"
-              src={user.avatar}
-              width={48}
-              height={48}
-              alt={user.username}
-              className="post-header-avatar"
-            />
-          )}
+          <Image
+            loading="lazy"
+            src={user.avatar || emailToPfp(user.email)}
+            width={48}
+            height={48}
+            alt={user.username}
+            className="post-header-avatar"
+          />
+
           <section className="post-header-container">
             <span className="post-header-name">
               <strong>@{user.username}</strong>
-              <span
-                className={`badge post-header-streak ${
-                  !user.displayStreak || user.streakCount === 0
-                    ? 'header-streak-zero'
-                    : ''
-                }`}
-                title={`${user.streakCount}-day streak`}
-              >
-                {`${user.streakCount <= 7 ? user.streakCount : '7+'}`}
-                <Icon size={24} glyph="admin-badge" title="Streak icon" />
-              </span>
               {user.css && (
                 <Icon
                   size={24}
@@ -107,35 +91,25 @@ const Post = ({
                   className="post-header-css"
                 />
               )}
-              {user.audio && (
-                <Icon
-                  size={24}
-                  glyph="rss"
-                  title="Has a customized sound"
-                  className="post-header-audio"
-                />
-              )}
             </span>
             <time className="post-header-date" dateTime={postedAt}>
-              {postedAt?.startsWith('20')
-                ? convertTimestampToDate(postedAt)
-                : postedAt}
+              {new Date(postedAt).toISOString()}
             </time>
           </section>
         </a>
       </Link>
     )}
     <Content>{text}</Content>
-    {(text) && (<Cartridges text={text} />)}
+    {text && <Cartridges text={text} />}
     {(attachments.length > 0 || mux.length > 0) && (
       <div className="post-attachments">
         {filter(attachments, a =>
-           typeof a === 'string' ? a.startsWith('data:image') : false
-         ).map(img => (
-           <a key={img} href={img} target="_blank" className="post-attachment">
-             <img key={img} src={img} />
-           </a>
-         ))}
+          typeof a === 'string' ? a.startsWith('data:image') : false
+        ).map(img => (
+          <a key={img} href={img} target="_blank" className="post-attachment">
+            <img key={img} src={img} />
+          </a>
+        ))}
         {filter(attachments, a => endsWithAny(imageFileTypes, a)).map(img => (
           <a
             key={img}
