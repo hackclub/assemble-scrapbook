@@ -1,10 +1,10 @@
 import Masonry from 'react-masonry-css'
 import Post from '../components/post'
 
-const Posts = ({ posts = [] }) => [
+const Posts = ({ posts = [], breakpointCols }) => [
   <Masonry
     key="masonry"
-    breakpointCols={{
+    breakpointCols={breakpointCols ||{
       10000: 4,
       1024: 3,
       640: 2,

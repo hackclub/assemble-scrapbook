@@ -129,6 +129,13 @@ const Post = ({
     {(text) && (<Cartridges text={text} />)}
     {(attachments.length > 0 || mux.length > 0) && (
       <div className="post-attachments">
+        {filter(attachments, a =>
+           typeof a === 'string' ? a.startsWith('data:image') : false
+         ).map(img => (
+           <a key={img} href={img} target="_blank" className="post-attachment">
+             <img key={img} src={img} />
+           </a>
+         ))}
         {filter(attachments, a => endsWithAny(imageFileTypes, a)).map(img => (
           <a
             key={img}
