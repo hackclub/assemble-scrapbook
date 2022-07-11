@@ -55,7 +55,7 @@ const Nav = () => {
             <a className="nav-link nav-link-home">Scrapbook</a>
           </Link>
         ))}
-      <Link href="/about/" passHref>
+      <Link href="https://assemble.hackclub.com" passHref>
         <a className="nav-link nav-link-about">About</a>
       </Link>
       <a

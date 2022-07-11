@@ -16,17 +16,11 @@ const Header = ({ reactions, children }) => (
     />
     <header>
       {children}
-      <h1>Hack Club’s Scrapbook</h1>
+      <h1>Scrapbook @ Assemble</h1>
       <p>
-        A daily diary of what <a href="https://hackclub.com/">Hack Clubbers</a>{' '}
-        are learning & making <Link href="/streaks" passHref><a>every day</a></Link>.
+        A diary of everything <a href="https://hackclub.com/">Hack Clubbers</a>{' '}
+        get up to at <Link href="https://assemble.hackclub.com" passHref><a>Assemble</a></Link>.
       </p>
-      <article className="post-reactions">
-        <h2 className="headline">Explore</h2>
-        {reactions.map(reaction => (
-          <Reaction key={reaction.name} {...reaction} />
-        ))}
-      </article>
     </header>
     <style jsx>{`
       header {

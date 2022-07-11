@@ -3,13 +3,13 @@ const Footer = () => (
     <aside className="container banner">
       <p className="post-text">
         You’ve reached the end, why not{' '}
-        <a href="https://hackclub.com/slack/">share your own making journey?</a>
+        <a href="https://hackclub.com/slack/">join us?</a>
       </p>
       <style jsx>{`
         .banner {
           padding: 12px 12px 12px;
           border-radius: 12px;
-          max-width: 720px;
+          max-width: 720px!important;
           background-color: var(--colors-orange);
           color: var(--colors-white);
           margin: 12px auto 24px;
