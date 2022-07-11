@@ -8,6 +8,7 @@ datasource db {
 }
 
 model Account {
+  id               String    @id @default(cuid())
   email    String    @unique(map: "Accounts.email_unique")
   username String    @unique(map: "Accounts.username_unique")
   cssURL   String?
