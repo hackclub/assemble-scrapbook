@@ -6,14 +6,7 @@ import prisma from '../../lib/prisma'
 export const getRawPosts = async (max = null, params = {}) => {
   const opts = {
     orderBy: {
-      messageTimestamp: 'desc'
-    },
-    include: {
-      emojiReactions: {
-        include: {
-          EmojiType: true
-        }
-      }
+      postTime: 'desc'
     },
     ...params
   }
@@ -41,13 +34,13 @@ export const transformReactions = (raw = []) =>
 export const transformPost = p => ({
   id: p.id,
   user: p.user ? p.user : {},
-  timestamp: p.messageTimestamp || null,
-  slackUrl: `https://hackclub.slack.com/archives/${p.channel}/p${p.messageTimestamp.toString().replace('.', '').padEnd(16, '0')}`,
-  postedAt: formatTS(p.messageTimestamp),
+  timestamp: null,
+  slackUrl: null,
+  postedAt: p.postTime,
   text: p.text != null ? p.text : '',
   attachments: p.attachments,
   mux: p.muxPlaybackIDs,
-  reactions: transformReactions(p.emojiReactions) || []
+  reactions: []
 })
 
 export const getPosts = async (max = null) => {
@@ -55,7 +48,7 @@ export const getPosts = async (max = null) => {
   return await getRawPosts(max).then(posts =>
     posts
       .map(p => {
-        p.user = find(users, { slackID: p.accountsSlackID }) || {}
+        p.user = find(users, { username: p.accountUsername }) || {}
         return p
       })
       .filter(p => !isEmpty(p.user))

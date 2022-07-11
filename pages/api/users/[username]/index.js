@@ -9,7 +9,7 @@ export const getProfile = async (value, field = 'username') => {
   const opts = {
     where
   }
-  const user = await prisma.accounts.findFirst(opts)
+  const user = await prisma.account.findFirst(opts)
   if (!user) console.error('Could not fetch account', value)
   return user && user?.username ? user : {}
 }
@@ -17,7 +17,7 @@ export const getProfile = async (value, field = 'username') => {
 export const getPosts = async user => {
   const allUpdates = await getRawPosts(null, {
     where: {
-      Accounts: { username: user.username}
+      Account: { username: user.username}
     }
   })
 
@@ -35,7 +35,7 @@ export const getMentions = async user => {
   if (!allUpdates) console.error('Could not fetch posts')
   return allUpdates
     .map(p => {
-      p.user = find(users, { slackID: p.accountsSlackID }) || {}
+      p.user = find(users, { username: p.accountUsername }) || {}
       return p
     })
     .filter(p => !isEmpty(p.user))

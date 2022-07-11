@@ -1,7 +1,7 @@
 import prisma from '../../lib/prisma'
 
 export const getUserStreaks = () =>
-  prisma.accounts.findMany({
+  prisma.account.findMany({
     where: {
       maxStreaks: {
         gt: 0
