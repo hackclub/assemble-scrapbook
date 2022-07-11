@@ -16,6 +16,22 @@ const imageFileTypes = ['jpg', 'jpeg', 'png', 'gif']
 
 const audioFileTypes = ['mp3', 'wav', 'aiff', 'm4a']
 
+function formatDate(postedAt){
+  const date = new Date(postedAt)
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ]
+  const dayIndex = date.getDay()
+  const dayName = days[dayIndex]
+  return `${dayName}, ${date.getHours()}:${date.getMinutes()}`
+}
+
 function endsWithAny(suffixes, string) {
   try {
     return suffixes.some(function (suffix) {
@@ -39,7 +55,7 @@ const Post = ({
   attachments = [],
   mux = [],
   reactions = [],
-  postedAt,
+  postedAt = new Date().toISOString(),
   slackUrl,
   muted = false
 }) => (
@@ -93,7 +109,7 @@ const Post = ({
               )}
             </span>
             <time className="post-header-date" dateTime={postedAt}>
-              {new Date(postedAt).toISOString()}
+              {formatDate(postedAt)}
             </time>
           </section>
         </a>
