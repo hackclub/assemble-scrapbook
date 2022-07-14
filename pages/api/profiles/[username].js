@@ -7,7 +7,8 @@ export default async (req, res) => {
   }
   const u = username.toLowerCase().replace(/[\.'”’]$/, '')
   const profile = await getProfile(u)
-  if (!profile?.slackID) {
+  console.log(profile)
+  if (!profile?.id) {
     return res.status(404).json({ status: 404, error: 'Cannot locate user' })
   }
   res.json(profile)

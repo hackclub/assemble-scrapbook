@@ -52,12 +52,6 @@
   margin: auto;
 }
 
-.header {
-  display: grid;
-  grid-gap: 16px;
-  width: 100%;
-}
-
 @media (min-width: 48em) {
   .nav {
     padding: 0 32px;
@@ -67,9 +61,6 @@
     margin-left: 12px;
   }
 
-  .header {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 
 @media (max-width: 32em) {
@@ -77,11 +68,6 @@
     margin-bottom: 16px;
   }
 
-  .header-col-1 {
-    display: flex;
-    align-items: center;
-    margin-top: 24px;
-  }
   .post {
     width: calc(100vw - 32px) !important;
   }
@@ -123,11 +109,16 @@
 .header-content {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 .header-links {
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 .header-link {
   color: var(--colors-blue);

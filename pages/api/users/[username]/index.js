@@ -17,7 +17,7 @@ export const getProfile = async (value, field = 'username') => {
 export const getPosts = async user => {
   const allUpdates = await getRawPosts(null, {
     where: {
-      Account: { username: user.username}
+      Accounts: { username: user.username}
     }
   })
 
@@ -44,7 +44,7 @@ export const getMentions = async user => {
 
 export default async (req, res) => {
   const profile = await getProfile(req.query.username)
-  if (!profile?.slackID)
+  if (!profile?.id)
     return res.status(404).json({ status: 404, error: 'Cannot locate user' })
   let webring = []
   if (profile.webring) {

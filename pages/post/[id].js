@@ -84,10 +84,12 @@ export default function Page({ link, initialData }) {
 
   const shipIt = async e => {
     setSubmissionSuccess('awaiting')
-    const { ok } = await fetch(`/api/share`, {
+    const { ok, error } = await fetch(`/api/share`, {
       method: 'POST',
       body: JSON.stringify(postData)
     }).then(r => r.json())
+    console.log(ok)
+    console.log(error)
     setSubmissionSuccess(ok ? 'succeeded' : 'failed')
   }
 
@@ -107,9 +109,7 @@ export default function Page({ link, initialData }) {
               padding: '16px'
             }}
           >
-            <h1>
-              👋 Hey Sam, how about sharing a post to Scrapbook?
-            </h1>
+            <h1>👋 Hey Sam, how about sharing a post to Scrapbook?</h1>
             <div className="dropbox">
               <div
                 className="image-drop"
@@ -152,6 +152,89 @@ export default function Page({ link, initialData }) {
                   : 'Please fill out all fields.'}
               </button>
             </div>
+          </div>
+          <div
+            style={{
+              textAlign: 'left',
+              background: 'var(--colors-elevated)',
+              width: 'fit-content',
+              marginLeft: '32px',
+              borderRadius: '8px',
+              marginTop: '16px',
+              padding: '16px',
+              width: 'calc(100% - 32px)'
+            }}
+          >
+            <h2 style={{width: '100%', marginTop: '4px'}}>👤 Update Your Profile</h2>
+            <Input
+              label="Pronouns (eg. she/hers)"
+              id="project-description"
+              type="textarea"
+              value={postData.description}
+              onChange={e =>
+                setPostData({ ...postData, description: e.target.value })
+              }
+            />
+            <Input
+              label="CSS URL"
+              id="project-description"
+              type="textarea"
+              value={postData.description}
+              onChange={e =>
+                setPostData({ ...postData, description: e.target.value })
+              }
+            />
+            <Input
+              label="Personal Website URL"
+              id="project-description"
+              type="textarea"
+              value={postData.description}
+              onChange={e =>
+                setPostData({ ...postData, description: e.target.value })
+              }
+            />
+            <Input
+              label="GitHub URL"
+              id="project-description"
+              type="textarea"
+              value={postData.description}
+              onChange={e =>
+                setPostData({ ...postData, description: e.target.value })
+              }
+            />
+            <div>
+              <button
+                disabled={
+                  !valid() ||
+                  ['awaiting', 'succeeded'].includes(submissionSuccess)
+                }
+                onClick={shipIt}
+              >
+                {valid()
+                  ? submissionSuccessOptions[submissionSuccess]
+                  : 'Save your profile.'}
+              </button>
+            </div>
+          </div>
+          <div
+            style={{
+              textAlign: 'left',
+              background: 'var(--colors-elevated)',
+              width: 'fit-content',
+              marginLeft: '32px',
+              borderRadius: '8px',
+              padding: '16px',
+              marginTop: '16px',
+              marginBottom: '8px',
+              fontWeight: 500,
+              
+            }}
+          >
+            <h2 style={{width: '100%', marginTop: '4px'}}>🌈 HackBoard</h2>
+            <div style={{ fontSize: '18px'}}>
+            By default, your most recent Scrapbook post is streamed onto{' '}
+            <b>HackBoard</b>. If you're looking to go stream a video, follow{' '}
+            <b>these instructions</b>.</div>
           </div>
         </div>
         <Posts
@@ -252,6 +335,15 @@ export default function Page({ link, initialData }) {
           button:hover {
             box-shadow: var(--shadow-sunken);
             transform: scale(1.0625);
+          }
+
+          .image-drop {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 134px;
+            border-radius: 4px;
           }
         `}
       </style>

@@ -5,21 +5,39 @@ import Reaction from '../components/reaction'
 import Feed from '../components/feed'
 import Footer from '../components/footer'
 
-const Header = ({ reactions, children }) => (
+const Header = ({ reactions, children, theme }) => (
   <>
     <Meta
       as={Head}
-      name="Hack Club Scrapbook"
+      name="Scrapbook @ Assemble ~ Hack Club"
       title="Home"
-      description="A daily streak system & portfolio for your projects. Join the Hack Club community of high school hackers & get yours started."
+      description="A diary of everything Hack Clubbers get up to at Assemble."
       image="https://cloud-53i932gta-hack-club-bot.vercel.app/0scrapbook.jpg"
     />
     <header>
       {children}
-      <h1>Scrapbook @ Assemble</h1>
+      {theme && (
+        <p
+          style={{
+            fontFamily: 'Shrikhand',
+            backgroundImage: `radial-gradient( ellipse farthest-corner at top left, var(--colors-yellow), var(--colors-green) )`,
+            backgroundRepeat: `no-repeat`,
+            webkitBackgroundClip: `text`,
+            webkitTextFillColor: `transparent`,
+            fontSize: '28px'
+          }}
+        >
+          Scrapbook @ Assemble
+        </p>
+      )}
+      <h1 style={{textDecoration: 'underline'}}>{theme ? theme : 'Scrapbook @ Assemble'}</h1>
       <p>
         A diary of everything <a href="https://hackclub.com/">Hack Clubbers</a>{' '}
-        get up to at <Link href="https://assemble.hackclub.com" passHref><a>Assemble</a></Link>.
+        get up to at{' '}
+        <Link href="https://assemble.hackclub.com" passHref>
+          <a>Assemble</a>
+        </Link>
+        .
       </p>
     </header>
     <style jsx>{`
@@ -92,7 +110,7 @@ const Header = ({ reactions, children }) => (
 
 const IndexPage = ({ reactions, initialData }) => (
   <Feed initialData={initialData} footer={<Footer />}>
-    <Header reactions={reactions} />
+    <Header reactions={reactions} theme="Never eat soggy WeetBix." />
   </Feed>
 )
 

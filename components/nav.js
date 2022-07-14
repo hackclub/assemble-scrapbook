@@ -42,19 +42,11 @@ const Nav = () => {
   return (
     <nav className="nav">
       <Flag />
-      {!home &&
-        (ext ? (
-          <a
-            href="https://scrapbook.hackclub.com/"
-            className="nav-link nav-link-home"
-          >
-            Scrapbook
-          </a>
-        ) : (
-          <Link href="/">
-            <a className="nav-link nav-link-home">Scrapbook</a>
-          </Link>
-        ))}
+      {!home && (
+        <Link href="/">
+          <a className="nav-link nav-link-home">Scrapbook @ Assemble</a>
+        </Link>
+      )}
       <Link href="https://assemble.hackclub.com" passHref>
         <a className="nav-link nav-link-about">About</a>
       </Link>

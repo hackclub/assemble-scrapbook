@@ -16,8 +16,7 @@ const imageFileTypes = ['jpg', 'jpeg', 'png', 'gif']
 
 const audioFileTypes = ['mp3', 'wav', 'aiff', 'm4a']
 
-function formatDate(postedAt){
-  const date = new Date(postedAt)
+function formatDate(postedAt) {
   const days = [
     'Sunday',
     'Monday',
@@ -27,6 +26,10 @@ function formatDate(postedAt){
     'Friday',
     'Saturday'
   ]
+  const date =
+    typeof days[new Date(postedAt).getDay()] !== 'undefined'
+      ? new Date(postedAt)
+      : new Date()
   const dayIndex = date.getDay()
   const dayName = days[dayIndex]
   return `${dayName}, ${date.getHours()}:${date.getMinutes()}`
@@ -66,23 +69,9 @@ const Post = ({
   >
     {profile || !user ? (
       <header className="post-header">
-        <time
-          className="post-header-date"
-          data-tip
-          data-for={`tip-${id}`}
-          dateTime={postedAt}
-        ></time>
-        <a href={slackUrl} target="_blank" rel="noopener noreferrer">
-          <Tooltip
-            id={`tip-${id}`}
-            place="top"
-            effect="solid"
-            delayShow={0}
-            delayHide={1000}
-          >
-            View on Slack ⧉
-          </Tooltip>
-        </a>
+        <time className="post-header-date" dateTime={postedAt}>
+              {formatDate(postedAt)}
+            </time>
       </header>
     ) : (
       <Link href="/[profile]" as={`/${user.username}`} prefetch={false}>
