@@ -4,17 +4,6 @@ import Input from '../../components/input'
 import { emailToPfp } from '../../lib/email'
 import { useRouter } from 'next/router'
 
-/*
-TODO
-- [x] see other scrapbook posts
-- [x] see preview of your own scrapbook post
-- [ ] clubs dropdown autofill / bring back the dropdown
-- [ ] get pfp (figure out implementation)
-- [x] page scrolls horizontally (fix padding)
-- [x] page scrolls vertically
-- [ ] autofill image from url
-*/
-
 const submissionSuccessOptions = {
   '': 'Ship it!',
   succeeded: 'Post submitted!',
