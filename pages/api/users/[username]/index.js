@@ -25,25 +25,8 @@ export const getPosts = async user => {
   return allUpdates.map(p => transformPost(p))
 }
 
-export const getMentions = async user => {
-  const users = await getRawUsers(true)
-  const allUpdates = await getRawPosts(null, {
-    where: {
-      text: { contains: `@${user.username}` }
-    }
-  })
-  if (!allUpdates) console.error('Could not fetch posts')
-  return allUpdates
-    .map(p => {
-      p.user = find(users, { username: p.accountUsername }) || {}
-      return p
-    })
-    .filter(p => !isEmpty(p.user))
-    .map(p => transformPost(p))
-}
-
 export default async (req, res) => {
-  const profile = await getProfile(req.query.username)
+  const profile = await getProfile(req.query.username, 'username')
   if (!profile?.id)
     return res.status(404).json({ status: 404, error: 'Cannot locate user' })
   let webring = []

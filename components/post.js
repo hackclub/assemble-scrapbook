@@ -60,7 +60,8 @@ const Post = ({
   reactions = [],
   postedAt = new Date().toISOString(),
   slackUrl,
-  muted = false
+  muted = false,
+  composing
 }) => (
   <section
     className="post"
@@ -96,6 +97,15 @@ const Post = ({
                   className="post-header-css"
                 />
               )}
+              {composing && 
+                <span className="composing-tag" style={{ color: '#edc71f' }}>
+                  <Icon
+                    size={24}
+                    glyph="post"
+                    title="Has a customized profile"
+                  />
+                </span>
+              }
             </span>
             <time className="post-header-date" dateTime={postedAt}>
               {formatDate(postedAt)}

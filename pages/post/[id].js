@@ -4,17 +4,6 @@ import Input from '../../components/input'
 import { emailToPfp } from '../../lib/email'
 import { useRouter } from 'next/router'
 
-/*
-TODO
-- [x] see other scrapbook posts
-- [x] see preview of your own scrapbook post
-- [ ] clubs dropdown autofill / bring back the dropdown
-- [ ] get pfp (figure out implementation)
-- [x] page scrolls horizontally (fix padding)
-- [x] page scrolls vertically
-- [ ] autofill image from url
-*/
-
 const submissionSuccessOptions = {
   '': 'Ship it!',
   succeeded: 'Post submitted!',
@@ -22,14 +11,15 @@ const submissionSuccessOptions = {
   awaiting: 'Shipping post!'
 }
 
-export default function Page({ link, initialData }) {
+export default function Page({ link, initialData, profile }) {
   const router = useRouter()
   const { id } = router.query
   const [dropping, setDropping] = useState(false)
   const [postData, setPostData] = useState({
     image: '',
     description: '',
-    id
+    id,
+    name: profile.username
   })
 
   const [submissionSuccess, setSubmissionSuccess] = useState('')
@@ -38,7 +28,7 @@ export default function Page({ link, initialData }) {
     id: 1,
     user: {
       username: postData.name || 'Fiona Hackwoof',
-      avatar: emailToPfp('') || 'https://placedog.net/500'
+      avatar: emailToPfp(profile.email) || 'https://placedog.net/500'
     },
     text:
       [postData.description, postData.link].join('\n') || 'feed me (woof woof)',
@@ -47,7 +37,8 @@ export default function Page({ link, initialData }) {
         'https://lawcall.com/wp-content/uploads/2015/03/Dog-Eating.jpg'
     ],
     postedAt: 'just now',
-    id
+    id,
+    composing: true
   })
 
   const onDragOver = e => {
@@ -82,6 +73,23 @@ export default function Page({ link, initialData }) {
     reader.readAsDataURL(files[0])
   }
 
+  const onClick = e => {
+    const input = document.querySelector('.image-drop-input')
+    input.click()
+  }
+
+  const onInput = e => {
+    preventDefaults(e)
+    const input = document.querySelector('.image-drop-input')
+    const files = input.files
+    setDropping(false)
+    const reader = new FileReader()
+    reader.onloadend = function () {
+      setPostData({ ...postData, image: reader.result })
+    }
+    reader.readAsDataURL(files[0])
+  }
+
   const shipIt = async e => {
     setSubmissionSuccess('awaiting')
     const { ok, error } = await fetch(`/api/share`, {
@@ -99,17 +107,8 @@ export default function Page({ link, initialData }) {
     <div>
       <div className="grid">
         <div>
-          <div
-            style={{
-              textAlign: 'left',
-              background: 'var(--colors-elevated)',
-              width: 'fit-content',
-              marginLeft: '32px',
-              borderRadius: '8px',
-              padding: '16px'
-            }}
-          >
-            <h1>👋 Hey Sam, how about sharing a post to Scrapbook?</h1>
+          <div className="info-box">
+            <h1>👋 Hey @{profile.username}, how about sharing a post to Scrapbook?</h1>
             <div className="dropbox">
               <div
                 className="image-drop"
@@ -118,8 +117,9 @@ export default function Page({ link, initialData }) {
                 onDragLeave={onDragLeave}
                 onDragOver={onDragOver}
                 onDrop={onDrop}
+                onClick={onClick}
               >
-                {postData.image != '' && '☑️ Uploaded!'} Drop
+                {postData.image != '' && '☑️ Uploaded!'} Drop or click to add
                 {postData.image != '' && ' new'} image here.
                 <input
                   className="image-drop-input"
@@ -127,6 +127,7 @@ export default function Page({ link, initialData }) {
                   id="img"
                   name="img"
                   accept="image/*"
+                  onInput={onInput}
                 ></input>
               </div>
             </div>
@@ -153,19 +154,10 @@ export default function Page({ link, initialData }) {
               </button>
             </div>
           </div>
-          <div
-            style={{
-              textAlign: 'left',
-              background: 'var(--colors-elevated)',
-              width: 'fit-content',
-              marginLeft: '32px',
-              borderRadius: '8px',
-              marginTop: '16px',
-              padding: '16px',
-              width: 'calc(100% - 32px)'
-            }}
-          >
-            <h2 style={{width: '100%', marginTop: '4px'}}>👤 Update Your Profile</h2>
+          <div className="info-box">
+            <h2 style={{ width: '100%', marginTop: '4px' }}>
+              👤 Update Your Profile
+            </h2>
             <Input
               label="Pronouns (eg. she/hers)"
               id="project-description"
@@ -212,25 +204,13 @@ export default function Page({ link, initialData }) {
               </button>
             </div>
           </div>
-          <div
-            style={{
-              textAlign: 'left',
-              background: 'var(--colors-elevated)',
-              width: 'fit-content',
-              marginLeft: '32px',
-              borderRadius: '8px',
-              padding: '16px',
-              marginTop: '16px',
-              marginBottom: '8px',
-              fontWeight: 500,
-              
-            }}
-          >
-            <h2 style={{width: '100%', marginTop: '4px'}}>🌈 HackBoard</h2>
-            <div style={{ fontSize: '18px'}}>
-            By default, your most recent Scrapbook post is streamed onto{' '}
-            <b>HackBoard</b>. If you're looking to go stream a video, follow{' '}
-            <b>these instructions</b>.</div>
+          <div className="info-box">
+            <h2 style={{ width: '100%', marginTop: '4px' }}>🌈 HackBoard</h2>
+            <div style={{ fontSize: '18px' }}>
+              By default, your most recent Scrapbook post is streamed onto{' '}
+              <b>HackBoard</b>. If you're looking to go stream a video, follow{' '}
+              <b>these instructions</b>.
+            </div>
           </div>
         </div>
         <Posts
@@ -251,6 +231,17 @@ export default function Page({ link, initialData }) {
             .grid {
               grid-template-columns: 1fr 1fr;
             }
+            .masonry-posts {
+              display: flex!important;
+            }
+            .info-box {
+              text-align: left;
+              background: var(--colors-elevated);
+              width: fit-content;
+              margin-left: 32px;
+              border-radius: 8px;
+              width: calc(100% - 32px);
+            }
           }
 
           .grid {
@@ -258,7 +249,25 @@ export default function Page({ link, initialData }) {
             margin-top: 16px;
           }
 
+        
+
+          .info-box {
+            text-align: left;
+            background: var(--colors-elevated);
+            width: fit-content;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            margin-left: 16px;
+            padding: 16px;
+            width: calc(100% - 32px);
+          }
+
           .image-drop-input {
+            display: none;
+          }
+
+          .masonry-posts {
             display: none;
           }
 
@@ -347,9 +356,13 @@ export default function Page({ link, initialData }) {
   )
 }
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps({ query, params }) {
   const { link } = query
+  const { id } = params
   const { getPosts } = require('../api/posts')
+  const { getProfile } = require('../api/users/[username]/index')
   const initialData = await getPosts(4)
-  return { props: { link, initialData } }
+  const profile = await getProfile(id, 'id')
+  console.log(profile)
+  return { props: { link, initialData, profile } }
 }

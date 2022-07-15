@@ -195,7 +195,6 @@ const UserPage = props => {
 export default UserPage
 
 export const getStaticPaths = async () => {
-  const { map } = require('lodash')
   const { getUsernames } = require('../api/usernames')
   let usernames = await getUsernames({
     take: 75
@@ -215,7 +214,6 @@ export const getStaticProps = async ({ params }) => {
 
   try {
     const posts = await getPosts(profile)
-    const { groupBy } = require('lodash')
     return {
       props: { profile, posts },
       revalidate: 1
