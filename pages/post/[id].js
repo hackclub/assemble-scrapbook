@@ -169,7 +169,6 @@ export default function Page({ link, initialData }) {
             <Input
               label="Pronouns (eg. she/hers)"
               id="project-description"
-              type="textarea"
               value={postData.description}
               onChange={e =>
                 setPostData({ ...postData, description: e.target.value })
@@ -178,7 +177,6 @@ export default function Page({ link, initialData }) {
             <Input
               label="CSS URL"
               id="project-description"
-              type="textarea"
               value={postData.description}
               onChange={e =>
                 setPostData({ ...postData, description: e.target.value })
@@ -187,7 +185,6 @@ export default function Page({ link, initialData }) {
             <Input
               label="Personal Website URL"
               id="project-description"
-              type="textarea"
               value={postData.description}
               onChange={e =>
                 setPostData({ ...postData, description: e.target.value })
@@ -196,7 +193,6 @@ export default function Page({ link, initialData }) {
             <Input
               label="GitHub URL"
               id="project-description"
-              type="textarea"
               value={postData.description}
               onChange={e =>
                 setPostData({ ...postData, description: e.target.value })
