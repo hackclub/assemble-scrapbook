@@ -273,10 +273,10 @@
   resolved "https://registry.npmjs.org/@next/env/-/env-12.2.1.tgz"
   integrity sha512-lz3TJKIvbdGRUsUr/+h3vy7XvBNGTGzHwhurk5AtqrABj4Zyo70xbshcI7YQTNUK4x9OA/E+SOcXvVx0DHmFRw==
 
-"@next/mdx@^12.2.1":
-  version "12.2.1"
-  resolved "https://registry.npmjs.org/@next/mdx/-/mdx-12.2.1.tgz"
-  integrity sha512-2T/EZbyX/r9vhrgDnvjybW1xbdIgOcXaiaVughkjP77HUueMSQJpvrgrJrGudcBsPoU15obX3hDMVhejSPRrcg==
+"@next/mdx@^12.2.2":
+  version "12.2.2"
+  resolved "https://registry.yarnpkg.com/@next/mdx/-/mdx-12.2.2.tgz#1cb24269a7871a728becf7854286f505b667acf3"
+  integrity sha512-d+yHApu6weFYrAbDj+2vMY3uE8kAnoNu5g3w8B3m3skUh6r1ekkKM2YTktlpNpum/XMnKGiPrIdAX4L4KuVdYg==
 
 "@next/swc-android-arm-eabi@12.2.1":
   version "12.2.1"

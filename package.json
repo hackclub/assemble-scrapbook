@@ -15,7 +15,7 @@
     "@hackclub/meta": "^1.1.32",
     "@hackclub/react-calendar-heatmap": "^1.8.2",
     "@mdx-js/loader": "^1.6.22",
-    "@next/mdx": "^12.2.1",
+    "@next/mdx": "^12.2.2",
     "@prisma/client": "4.0.0",
     "form-data": "^4.0.0",
     "hls.js": "^1.1.5",
