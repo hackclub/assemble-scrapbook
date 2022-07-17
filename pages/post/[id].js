@@ -5,10 +5,18 @@ import { emailToPfp } from '../../lib/email'
 import { useRouter } from 'next/router'
 
 const submissionSuccessOptions = {
-  '': 'Ship it!',
+  '': 'Send post!',
   succeeded: 'Post submitted!',
   failed: 'Post failed!',
-  awaiting: 'Shipping post!'
+  awaiting: <span>
+    <img src="https://samherbert.net/svg-loaders/svg-loaders/puff.svg" style={{
+    height: '24px',
+    verticalAlign: 'text-top',
+    marginLeft: '-8px',
+    marginRight: '6px',
+  }} />
+    Sending post...
+  </span>
 }
 
 export default function Page({ link, initialData, profile }) {
@@ -99,6 +107,9 @@ export default function Page({ link, initialData, profile }) {
     console.log(ok)
     console.log(error)
     setSubmissionSuccess(ok ? 'succeeded' : 'failed')
+    if (ok) setTimeout(() => {
+      location.reload() // refresh page, replace later with built-in updating
+    }, 2000)
   }
 
   const valid = () => Object.values(postData).every(x => x !== '')
