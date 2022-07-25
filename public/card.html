@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/fonts.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <title>Ship Card</title>
     <style>
+        :root {
+            --color-navy: #1a3f71;
+            --color-red: #c0362c;
+            --color-offwhite: #fff8f2;
+        }
         html, body, div.main {
             width: 400px;
             height: 600px;
@@ -13,22 +22,58 @@
             padding: 0px;
             border: none;
             box-sizing: border-box;
-            line-height: 0px;
-            font-size: 0px;
+            font-family: 'Baloo 2', ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, Nunito, 'Space Grotesk', "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
         }
         div.main {
-            background-color: rgb(46, 47, 49);
+            background-color: var(--color-offwhite);
             color: white;
+            overflow: auto;
         }
         div.main > p {
             font-size: 20px;
-            padding: 10px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk';
+        }
+        .space {
+            font-family: 'Space Grotesk';
+        }
+        code, .code {
+            font-family: 'Space Mono';
+        }
+        .baloo {
+            font-family: 'Baloo 2';
+        }
+        .mt-0 {
+            margin-top: 0px;
+        }
+        div.main header {
+            height: 60px;
+            width: 100%;
+            background-color: var(--color-navy);
+            color: var(--color-red);
+        }
+        div.main header img {
+            height: 100%;
+            background-color: var(--color-red);
+            display: inline-block;
+        }
+        div.main header h1 {
+            display: inline-block;
+            vertical-align: top;
+            color: var(--color-offwhite);
+            transform: translate(10px, 10px);
         }
     </style>
 </head>
 <body>
     <div class="main">
-        <p>hi</p>
+        <header>
+            <img src="https://assemble.hackclub.com/invert.png" />
+            <h1 class="mt-0">
+                ASSEMBLE
+            </h1>
+        </header>
     </div>
 </body>
 </html>
