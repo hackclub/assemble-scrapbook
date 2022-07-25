@@ -14,6 +14,7 @@
             --color-navy: #1a3f71;
             --color-red: #c0362c;
             --color-offwhite: #fff8f2;
+            --nfc-translate-x: 7px;
         }
         html, body, div.main {
             width: 400px;
@@ -28,6 +29,7 @@
             background-color: var(--color-offwhite);
             color: white;
             overflow: auto;
+            position: relative;
         }
         div.main > p {
             font-size: 20px;
@@ -64,16 +66,142 @@
             color: var(--color-offwhite);
             transform: translate(10px, 10px);
         }
+        div.main > img.qr {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 100px;
+            height: 100px;
+            background: white;
+        }
+        div.main footer .logo {
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            border-radius: 12px 0px 0px 0px;
+            background-color: var(--color-red);
+            z-index: 50;
+        }
+        div.main footer .qr {
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+            border-radius: 0px 12px 0px 0px;
+            /* border: 2px solid var(--color-navy); */
+            /* border-bottom: none; */
+            box-sizing: border-box;
+            z-index: 50;
+        }
+        div.main footer {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 120px;
+            background-color: var(--color-navy);
+            color: var(--color-offwhite);
+            border-radius: 30px 30px 0px 0px;
+            z-index: 10;
+        }
+        div.nfc-1 {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(var(--nfc-translate-x)) translate(-50%, 50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 0.5px solid #ffffffaa;
+            box-sizing: border-box;
+        }
+        div.nfc-2 {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(var(--nfc-translate-x)) translate(-50%, 50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1.4px solid white;
+            box-sizing: border-box;
+        }
+        div.nfc-3 {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(var(--nfc-translate-x)) translate(-50%, 50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-sizing: border-box;
+        }
+        div.id {
+            position: absolute;
+            bottom: 30px;
+            left: 55px;
+            font-size: 10px;
+            font-family: 'Space Mono';
+            color: var(--color-offwhite);
+            z-index: 60;
+        }
+        div.nfc-cover-1 {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(var(--nfc-translate-x)) translate(-70%, 60%) rotate(35deg);
+            width: 100px;
+            height: 30px;
+            box-sizing: border-box;
+            z-index: 90;
+            background-color: var(--color-navy);
+        }
+        div.nfc-cover-2 {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(var(--nfc-translate-x)) translate(-70%, 40%) rotate(-35deg);
+            width: 100px;
+            height: 30px;
+            box-sizing: border-box;
+            z-index: 90;
+            background-color: var(--color-navy);
+        }
+        div.nfc-text {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-2px) translate(-50%, 50%);
+            color: white;
+            font-family: 'Space Mono';
+            font-size: 12px;
+            z-index: 91;
+        }
     </style>
 </head>
 <body>
     <div class="main">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?format=svg&qzone=3&size=100x100&ecc=M&margin=8&data=https://as.hack.af/s/1" alt="QR Code" class="qr" />
         <header>
             <img src="https://assemble.hackclub.com/invert.png" />
             <h1 class="mt-0">
                 ASSEMBLE
             </h1>
         </header>
+        <footer>
+            <div class="nfc-1"></div>
+            <div class="nfc-2"></div>
+            <div class="nfc-3"></div>
+            <div class="nfc-cover-1"></div>
+            <div class="nfc-cover-2"></div>
+            <div class="nfc-text">123</div>
+            <img src="https://assemble.hackclub.com/invert.png" class="logo" />
+            <img src="https://api.qrserver.com/v1/create-qr-code/?format=svg&qzone=3&size=120x120&ecc=M&margin=10&color=ffffff&bgcolor=c0362c&data=https://as.hack.af/s/1" alt="QR Code" class="qr" />
+        </footer>
     </div>
 </body>
 </html>
