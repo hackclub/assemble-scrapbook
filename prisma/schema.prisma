@@ -26,7 +26,8 @@ model Updates {
   attachments      String[]
   isLargeVideo     Boolean?
   Accounts         Account? @relation(references: [id], fields: [accountID])
-  accountID  String?
+  accountID        String?
+  postNumber       Int @default(autoincrement())
 }
 
 model Token {
