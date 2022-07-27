@@ -208,6 +208,9 @@
             margin: 6px;
             box-sizing: border-box;
         }
+        body.scale3x {
+            transform: scale(3) translate(32.5%, 32.5%);
+        }
     </style>
 </head>
 <body>
@@ -246,8 +249,13 @@
                 prop === 'id' ? location.href.split('/').filter(s => s?.length).pop() : null
             ),
         });
+
         document.querySelector('img.qr').src = `https://api.qrserver.com/v1/create-qr-code/?format=svg&qzone=3&size=120x120&ecc=M&margin=10&color=ffffff&bgcolor=c0362c&data=https://as.hack.af/s/${params.id}`;
         document.querySelector('div.nfc-text').innerText = params.id.padStart(3, '0');
+
+        if (params.scale == 'true') {
+            document.body.classList.add('scale3x');
+        }
 
         async function fetchPost (number) {
             const response = await fetch('/api/numbered-post/' + encodeURIComponent(number)).then(response => response.json());
