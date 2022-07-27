@@ -255,7 +255,10 @@
             document.querySelector('img.primary').src = response.attachments[0];
         }
 
-        fetchPost(params.id);
+        fetchPost(params.id).then(() => {
+            window.status = 'ready';
+            window.AssembleScrapbookCardView__Ready = true;
+        });
     </script>
 </body>
 </html>
