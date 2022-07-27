@@ -211,6 +211,9 @@
         body.scale3x {
             transform: scale(3) translate(33.3%, 33.3%);
         }
+        body.scale6x {
+            transform: scale(6) translate(41.67%, 41.67%);
+        }
     </style>
 </head>
 <body>
@@ -253,7 +256,9 @@
         document.querySelector('img.qr').src = `https://api.qrserver.com/v1/create-qr-code/?format=svg&qzone=3&size=120x120&ecc=M&margin=10&color=ffffff&bgcolor=c0362c&data=https://as.hack.af/s/${params.id}`;
         document.querySelector('div.nfc-text').innerText = params.id.padStart(3, '0');
 
-        if (params.scale == 'true') {
+        if (params.scale6x == 'true') {
+            document.body.classList.add('scale6x');
+        } else if (params.scale == 'true') {
             document.body.classList.add('scale3x');
         }
 
