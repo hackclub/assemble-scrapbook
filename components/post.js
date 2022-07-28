@@ -173,7 +173,7 @@ function Post({
         </span>
       )}
       <Content>{text}</Content>
-      {collaborators[0] && (
+      {collaborators && (collaborators[0] && (
         <div style={{ color: 'var(--colors-muted)', display: 'inline-block' }}>
           with{' '}
           {collaborators.map((collab, index) => (
@@ -187,7 +187,7 @@ function Post({
             </>
           ))}
         </div>
-      )}
+      ))}
       {(attachments.length > 0 || mux.length > 0) && (
         <div className="post-attachments">
           {filter(attachments, a =>
