@@ -11,7 +11,8 @@ export default NextAuth({
       version: '2.0',
       clientId: 'com.hackclub.AssembleScrapbook',
       authorization: {
-        url: 'https://id.assemble.hackclub.com/oauth/authorize'
+        url: 'https://id.assemble.hackclub.com/oauth/authorize',
+        'app_id': 'com.hackclub.AssembleScrapbook'
       },
       token: {
         url: 'https://api.id.assemble.hackclub.com/oauth/token'
