@@ -37,10 +37,8 @@ model Updates {
 
 model Reactions {
   id        String   @id @default(cuid())
-  accountID String?
-  Account   Account? @relation(references: [id], fields: [accountID])
-  emoji     String
-  amount    Int
+  cookie    String
+  emoji     String[]
   updateId  String
   update    Updates  @relation(references: [id], fields: [updateId])
 }
