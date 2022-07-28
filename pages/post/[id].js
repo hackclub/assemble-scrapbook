@@ -70,7 +70,8 @@ export default function Page({ link, initialData, profile }) {
     ],
     postedAt: 'just now',
     id,
-    composing: true
+    composing: true,
+    collaborators: []
   })
 
   const onDragOver = e => {

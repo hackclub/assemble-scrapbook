@@ -17,7 +17,6 @@ model Account {
   github    String?
   pronouns  String?
   updates   Updates[]
-  reactions Reactions[]
   tokens    Token[]
 }
 

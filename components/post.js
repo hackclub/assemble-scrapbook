@@ -151,7 +151,7 @@ function Post({
               </section>
             </a>
           </Link>
-          <section
+          {!composing && (<section
             onClick={async () => {
               play()
               await fetch(`/api/clap?id=${id}`)
@@ -169,7 +169,7 @@ function Post({
             <span style={{ marginLeft: '4px', marginRight: '3px' }}>
               {claps}
             </span>
-          </section>
+          </section>)}
         </span>
       )}
       <Content>{text}</Content>

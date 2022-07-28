@@ -2,16 +2,26 @@ import prisma from '../../lib/prisma'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { useState } from 'react'
+import Cookies from 'cookies'
 
-export default function Judging({ update }) {
+export default function Judging({ update, reaction }) {
   const [emojiState, setEmojiState] = useState(0)
   const [selected, setSelected] = useState({
-    1: '❓',
-    2: '❓',
-    3: '❓',
-    4: '❓',
-    5: '❓'
+    1: reaction?.emoji[0] || '❓',
+    2: reaction?.emoji[1] ||'❓',
+    3: reaction?.emoji[2] ||'❓',
+    4: reaction?.emoji[3] ||'❓',
+    5: reaction?.emoji[4] ||'❓'
   })
+  function upload(selectedToUse){
+    fetch(`/api/judge?update=${update.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({emoji: Object.values(selectedToUse).map(x=>(x.native || x))})
+    })
+  }
   return (
     <div style={{ textAlign: 'center' }}>
       <img
@@ -133,6 +143,7 @@ export default function Judging({ update }) {
             newData[emojiState] = emoji
             setSelected({ ...selected, ...newData })
             setEmojiState(0)
+            upload({ ...selected, ...newData })
           }}
         />
       </div>
@@ -146,9 +157,15 @@ export default function Judging({ update }) {
 }
 
 export async function getServerSideProps(ctx) {
+  const cookies = new Cookies(ctx.req, ctx.res)
+  let reaction = await prisma.reactions.findFirst({
+    where: {
+      cookie: cookies.get('assemble-judging')
+    },
+  })
   let update = await prisma.updates.findFirst({
     where: {
-      id: ctx.params.id
+      postNumber: parseInt(ctx.params.id)
     },
     include: {
       Accounts: true,
@@ -158,5 +175,6 @@ export async function getServerSideProps(ctx) {
   let emojis = await fetch('http://badger-zeta.vercel.app/api/emoji').then(r =>
     r.json()
   )
-  return { props: { update, emojis } }
+  console.log(reaction)
+  return { props: { update, emojis, reaction } }
 }
