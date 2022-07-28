@@ -30,7 +30,28 @@ export default function Page({ link, initialData, profile }) {
     name: profile.username
   })
 
-  const [submissionSuccess, setSubmissionSuccess] = useState('')
+  const [userData, setUserData] = useState(profile);
+  const [saveUserDataButton, setSaveUserDataButton] = useState('Save your profile.');
+
+  const [submissionSuccess, setSubmissionSuccess] = useState('');
+
+  const saveProfile = () => {
+    setSaveUserDataButton('Saving...');
+    fetch('/api/update-user-data/0', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    }).then(res => res.json()).then(resp => {
+      if (resp.success) {
+        setSaveUserDataButton('Saved!');
+        setTimeout(() => {
+          setSaveUserDataButton('Save your profile.')
+        }, 5000);
+      }
+    });
+  }
 
   const preview = () => ({
     id: 1,
@@ -172,46 +193,40 @@ export default function Page({ link, initialData, profile }) {
             <Input
               label="Pronouns (eg. she/hers)"
               id="project-description"
-              value={postData.description}
+              value={userData.pronouns}
               onChange={e =>
-                setPostData({ ...postData, description: e.target.value })
+                setUserData({ ...userData, pronouns: e.target.value })
               }
             />
             <Input
               label="CSS URL"
               id="project-description"
-              value={postData.description}
+              value={userData.cssURL}
               onChange={e =>
-                setPostData({ ...postData, description: e.target.value })
+                setUserData({ ...userData, cssURL: e.target.value })
               }
             />
             <Input
               label="Personal Website URL"
               id="project-description"
-              value={postData.description}
+              value={userData.website}
               onChange={e =>
-                setPostData({ ...postData, description: e.target.value })
+                setUserData({ ...userData, website: e.target.value })
               }
             />
             <Input
               label="GitHub URL"
               id="project-description"
-              value={postData.description}
+              value={userData.github}
               onChange={e =>
-                setPostData({ ...postData, description: e.target.value })
+                setUserData({ ...userData, github: e.target.value })
               }
             />
             <div>
               <button
-                disabled={
-                  !valid() ||
-                  ['awaiting', 'succeeded'].includes(submissionSuccess)
-                }
-                onClick={shipIt}
+                onClick={saveProfile}
               >
-                {valid()
-                  ? submissionSuccessOptions[submissionSuccess]
-                  : 'Save your profile.'}
+                {saveUserDataButton}
               </button>
             </div>
           </div>

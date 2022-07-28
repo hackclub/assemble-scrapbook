@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/fonts.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <title>Ship Card</title>
+    <style>
+        :root {
+            --color-navy: #1a3f71;
+            --color-red: #c0362c;
+            --color-offwhite: #fff8f2;
+            --nfc-translate-x: 2px;
+            --nfc-translate-y-all: -16px;
+        }
+        html, body, div.main {
+            width: 400px;
+            height: 600px;
+            margin: 0px;
+            padding: 0px;
+            border: none;
+            box-sizing: border-box;
+            font-family: Nunito, ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, 'Space Grotesk', "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+        }
+        div.main {
+            background-color: var(--color-offwhite);
+            color: white;
+            overflow: auto;
+            position: relative;
+        }
+        div.main > p {
+            font-size: 20px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk';
+        }
+        .space {
+            font-family: 'Space Grotesk';
+        }
+        code, .code {
+            font-family: 'Space Mono';
+        }
+        .baloo {
+            font-family: 'Baloo 2';
+        }
+        .mt-0 {
+            margin-top: 0px;
+        }
+        div.main header {
+            height: 60px;
+            width: 100%;
+            background-color: var(--color-navy);
+            color: var(--color-red);
+        }
+        div.main header img {
+            height: 100%;
+            background-color: var(--color-red);
+            display: inline-block;
+        }
+        div.main header h1 {
+            display: inline-block;
+            vertical-align: top;
+            color: var(--color-offwhite);
+            transform: translate(10px, 10px);
+        }
+        div.main > img.qr {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 100px;
+            height: 100px;
+            background: white;
+        }
+        div.main footer .logo {
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            border-radius: 12px 0px 0px 0px;
+            background-color: var(--color-red);
+            z-index: 50;
+        }
+        div.main footer .qr {
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+            border-radius: 0px 12px 0px 0px;
+            /* border: 2px solid var(--color-navy); */
+            /* border-bottom: none; */
+            box-sizing: border-box;
+            z-index: 50;
+        }
+        div.main footer {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 120px;
+            background-color: var(--color-navy);
+            color: var(--color-offwhite);
+            border-radius: 30px 30px 0px 0px;
+            z-index: 10;
+        }
+        div.nfc-1 {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateY(var(--nfc-translate-y-all)) translateX(var(--nfc-translate-x)) translate(-50%, 50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 0.5px solid #ffffffaa;
+            box-sizing: border-box;
+        }
+        div.nfc-2 {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateY(var(--nfc-translate-y-all)) translateX(var(--nfc-translate-x)) translate(-50%, 50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1.4px solid white;
+            box-sizing: border-box;
+        }
+        div.nfc-3 {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateY(var(--nfc-translate-y-all)) translateX(var(--nfc-translate-x)) translate(-50%, 50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-sizing: border-box;
+        }
+        div.nfc-cover-1 {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateY(var(--nfc-translate-y-all)) translateX(var(--nfc-translate-x)) translate(-70%, 60%) rotate(35deg);
+            width: 100px;
+            height: 30px;
+            box-sizing: border-box;
+            z-index: 90;
+            background-color: var(--color-navy);
+        }
+        div.nfc-cover-2 {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateY(var(--nfc-translate-y-all)) translateX(var(--nfc-translate-x)) translate(-70%, 40%) rotate(-35deg);
+            width: 100px;
+            height: 30px;
+            box-sizing: border-box;
+            z-index: 90;
+            background-color: var(--color-navy);
+        }
+        div.nfc-text {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateY(var(--nfc-translate-y-all)) translateX(-7px) translate(-50%, 50%);
+            color: white;
+            font-family: 'Space Mono';
+            font-size: 12px;
+            z-index: 91;
+        }
+        .nfc-wordmark {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateY(30px) translate(-50%, 50%);
+            font-size: 18px;
+            z-index: 99;
+            font-weight: 600;
+        }
+        p.content {
+            color: black;
+            margin-top: 0px;
+        }
+        img.primary {
+            width: 100%;
+            max-height: 280px;
+            border-radius: 12px;
+            object-fit: contain;
+            object-position: center;
+            background-color: #00000033;
+        }
+        div.body {
+            padding: 16px;
+        }
+        div.authors {
+            width: 100%;
+            padding: 6px;
+            background-color: black;
+            color: white;
+            box-sizing: border-box;
+        }
+        div.authors p {
+            margin: 6px;
+            box-sizing: border-box;
+        }
+        body.scale3x {
+            transform: scale(3) translate(33.3%, 33.3%);
+        }
+        body.scale6x {
+            transform: scale(6) translate(41.67%, 41.67%);
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <!-- <img src="https://api.qrserver.com/v1/create-qr-code/?format=svg&qzone=3&size=100x100&ecc=M&margin=8&data=https://as.hack.af/s/1" alt="QR Code" class="qr" />
+        <header>
+            <img src="https://assemble.hackclub.com/invert.png" />
+            <h1 class="mt-0">
+                ASSEMBLE
+            </h1>
+        </header> -->
+        <div class="authors">
+            <p><b>ian.m</b> at 11:42PM</p>
+        </div>
+        <div class="body">
+            <p class="content"></p>
+            <img class="primary">
+        </div>
+        <footer>
+            <div class="nfc-1"></div>
+            <div class="nfc-2"></div>
+            <div class="nfc-3"></div>
+            <div class="nfc-cover-1"></div>
+            <div class="nfc-cover-2"></div>
+            <div class="nfc-text">123</div>
+            <h1 class="mt-0 nfc-wordmark">
+                ASSEMBLE
+            </h1>
+            <img src="https://assemble.hackclub.com/invert.png" class="logo" />
+            <img src="" alt="QR Code" class="qr" />
+        </footer>
+    </div>
+    <script>
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop) ?? (
+                prop === 'id' ? location.href.split('/').filter(s => s?.length).pop() : null
+            ),
+        });
+
+        document.querySelector('img.qr').src = `https://api.qrserver.com/v1/create-qr-code/?format=svg&qzone=3&size=120x120&ecc=M&margin=10&color=ffffff&bgcolor=c0362c&data=https://as.hack.af/s/${params.id}`;
+        document.querySelector('div.nfc-text').innerText = params.id.padStart(3, '0');
+
+        if (params.scale6x == 'true') {
+            document.body.classList.add('scale6x');
+        } else if (params.scale == 'true') {
+            document.body.classList.add('scale3x');
+        }
+
+        async function fetchPost (number) {
+            const response = await fetch('/api/numbered-post/' + encodeURIComponent(number)).then(response => response.json());
+            document.querySelector('p.content').innerHTML = response.parsedText;
+            document.querySelector('img.primary').src = response.attachments[0];
+        }
+
+        fetchPost(params.id).then(() => {
+            window.status = 'ready';
+            window.AssembleScrapbookCardView__Ready = true;
+        });
+    </script>
+</body>
+</html>

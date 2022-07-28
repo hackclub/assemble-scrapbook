@@ -98,12 +98,27 @@ const Post = ({
                 />
               )}
               {composing && 
-                <span className="composing-tag" style={{ color: '#edc71f' }}>
+                <span className="composing-tag" style={{ 
+                  backgroundColor: '#eace23',
+                  color: 'white',
+                  padding: '2px',
+                  boxSizing: 'border-box',
+                  display: 'inherit',
+                  borderRadius: '11px',
+                  marginLeft: '6px'
+                }}>
                   <Icon
-                    size={24}
+                    size={18}
                     glyph="post"
                     title="Has a customized profile"
                   />
+                  <span style={{
+                    margin: '0px 4px 0px 2px',
+                    transform: 'translateY(2px)',
+                    verticalAlign: 'middle'
+                  }}>
+                    DRAFT
+                  </span>
                 </span>
               }
             </span>

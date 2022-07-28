@@ -47,6 +47,10 @@ module.exports = withMDX({
       {
         source: '/:username.rss',
         destination: '/api/rss/:username'
+      },
+      {
+        source: '/s/:post',
+        destination: '/card.html'
       }
     ]
   },
