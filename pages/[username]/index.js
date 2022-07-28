@@ -78,6 +78,9 @@ const Profile = ({
       />
       <section>
         <h1 className="header-title-name">@{profile.username}</h1>
+        <h4 className="header-pronouns" style={{
+          margin: '10px 0px'
+        }}>{profile.pronouns}</h4>
         <div className="header-content">
           <div className="header-links">
             {profile.github && (

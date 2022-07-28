@@ -46,6 +46,9 @@ export default function Page({ link, initialData, profile }) {
     }).then(res => res.json()).then(resp => {
       if (resp.success) {
         setSaveUserDataButton('Saved!');
+        router.reload()
+      } else {
+        setSaveUserDataButton(resp.reason);
         setTimeout(() => {
           setSaveUserDataButton('Save your profile.')
         }, 5000);

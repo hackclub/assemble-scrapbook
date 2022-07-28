@@ -79,3 +79,8 @@ img {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.clap:hover {
+  background: var(--colors-purple)!important;
+  cursor: pointer;
+}

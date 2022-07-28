@@ -41,7 +41,9 @@ export const transformPost = p => ({
   attachments: p.attachments,
   mux: p.muxPlaybackIDs,
   claps: p.claps,
-  reactions: []
+  isShip: p.isShip,
+  reactions: [],
+  collaborators: p.collaborators
 })
 
 export const getPosts = async (max = null) => {
@@ -54,6 +56,22 @@ export const getPosts = async (max = null) => {
       })
       .map(p => transformPost(p))
   )
+}
+
+export const getIdPost = async (id) => {
+  const singlePost = await prisma.updates.findUnique({
+    where: {
+      id
+    },
+    include: {
+      Accounts: true
+    }
+  });
+  singlePost.user = singlePost.Accounts;
+  console.log({ singlePost })
+  const transformed = transformPost(singlePost);
+  console.log(transformed);
+  return transformed;
 }
 
 export default async (req, res) => {

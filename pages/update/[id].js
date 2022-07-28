@@ -1,11 +1,9 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Meta from '@hackclub/meta'
-import Reaction from '../components/reaction'
-import Feed from '../components/feed'
-import Footer from '../components/footer'
-
-import { useSession } from "next-auth/react"
+import Reaction from '../../components/reaction'
+import Feed from '../../components/feed'
+import Footer from '../../components/footer'
 
 const Header = ({ reactions, children, theme }) => (
   <>
@@ -110,41 +108,37 @@ const Header = ({ reactions, children, theme }) => (
   </>
 )
 
-const IndexPage = ({ reactions, initialData }) => {
-
-  return (
-    <Feed initialData={initialData} footer={<Footer />}>
-      <Header reactions={reactions} theme="Never eat soggy WeetBix." />
-      {status === "authenticated" ? <p>Signed in as {session.user.email}</p> : <a href="/api/auth/signin">Sign in</a>}
-    </Feed>
-  )
-}
+const IndexPage = ({ post }) => (
+  <Feed initialData={[post]} footer={<Footer />} doNotFetchAdditionalData={true}>
+    <Header reactions={{}} theme="Never eat soggy WeetBix." />
+  </Feed>
+)
 
 export default IndexPage
 
-export const getStaticProps = async () => {
-  const { getPosts } = require('./api/posts')
-  const initialData = await getPosts(48)
-  const { find, compact, map, flatten } = require('lodash')
-  const names = [
-    'art',
-    'package',
-    'hardware',
-    'vsc',
-    'nextjs',
-    'js',
-    'vercel',
-    'swift',
-    'rustlang',
-    'slack',
-    'github',
-    'car',
-    'musical_note',
-    'robot_face',
-    'birthday'
-  ]
-  const reactions = compact(
-    names.map(name => find(flatten(map(initialData, 'reactions')), { name }))
-  )
-  return { props: { reactions, initialData }, revalidate: 1 }
+export const getServerSideProps = async ({ query, params }) => {
+  const { getIdPost } = require('../api/posts')
+  const initialData = [await getIdPost(query.id)]
+  // const { find, compact, map, flatten } = require('lodash')
+  // const names = [
+  //   'art',
+  //   'package',
+  //   'hardware',
+  //   'vsc',
+  //   'nextjs',
+  //   'js',
+  //   'vercel',
+  //   'swift',
+  //   'rustlang',
+  //   'slack',
+  //   'github',
+  //   'car',
+  //   'musical_note',
+  //   'robot_face',
+  //   'birthday'
+  // ]
+  // const reactions = compact(
+  //   names.map(name => find(flatten(map(initialData, 'reactions')), { name }))
+  // )
+  return { props: { post: initialData[0] } }
 }

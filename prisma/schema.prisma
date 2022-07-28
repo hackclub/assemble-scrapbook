@@ -8,29 +8,41 @@ datasource db {
 }
 
 model Account {
-  id       String    @id @default(cuid())
-  email    String    @unique(map: "Accounts.email_unique")
-  username String    @unique(map: "Accounts.username_unique")
-  cssURL   String?
-  stream   String?
-  website  String?
-  github   String?
-  pronouns String?
-  updates  Updates[]
-  tokens   Token[]
+  id        String      @id @default(cuid())
+  email     String      @unique(map: "Accounts.email_unique")
+  username  String      @unique(map: "Accounts.username_unique")
+  cssURL    String?
+  stream    String?
+  website   String?
+  github    String?
+  pronouns  String?
+  updates   Updates[]
+  reactions Reactions[]
+  tokens    Token[]
 }
 
 model Updates {
-  id          String    @id @default(cuid())
-  postTime    DateTime? @default(now())
-  text        String?
-  attachments String[]
-  isShip      Boolean?  @default(false)
-  Accounts    Account?  @relation(references: [id], fields: [accountID])
-  accountID   String?
-  postNumber  Int @default(autoincrement())
-  claps       Int @default(0)
+  id            String      @id @default(cuid())
+  postTime      DateTime?   @default(now())
+  text          String?
+  attachments   String[]
+  isShip        Boolean?    @default(false)
+  Accounts      Account?    @relation(references: [id], fields: [accountID])
+  accountID     String?
+  postNumber    Int         @default(autoincrement())
+  claps         Int         @default(0)
   collaborators String[]
+  reactions     Reactions[]
+}
+
+model Reactions {
+  id        String   @id @default(cuid())
+  accountID String?
+  Account   Account? @relation(references: [id], fields: [accountID])
+  emoji     String
+  amount    Int
+  updateId  String
+  update    Updates  @relation(references: [id], fields: [updateId])
 }
 
 model Token {
