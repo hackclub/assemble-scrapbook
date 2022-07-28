@@ -8,7 +8,7 @@ import Nav from '../components/nav'
 import NProgress from '../components/nprogress'
 import { SessionProvider } from "next-auth/react"
 
-const App = ({ Component, pageProps }) => (
+const App = ({ Component, pageProps: {session, ...pageProps} }) => (
   <>
     <SessionProvider session={session}>
       <Nav />
