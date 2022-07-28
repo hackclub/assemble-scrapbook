@@ -8,10 +8,11 @@ datasource db {
 }
 
 model Account {
-  id               String    @id @default(cuid())
+  id       String    @id @default(cuid())
   email    String    @unique(map: "Accounts.email_unique")
   username String    @unique(map: "Accounts.username_unique")
   cssURL   String?
+  stream   String?
   website  String?
   github   String?
   pronouns String?
@@ -20,18 +21,18 @@ model Account {
 }
 
 model Updates {
-  id               String    @id @default(cuid())
-  postTime         DateTime? @default(now())
-  text             String?
-  attachments      String[]
-  isLargeVideo     Boolean?
-  Accounts         Account? @relation(references: [id], fields: [accountID])
-  accountID  String?
+  id          String    @id @default(cuid())
+  postTime    DateTime? @default(now())
+  text        String?
+  attachments String[]
+  isShip      Boolean?  @default(false)
+  Accounts    Account?  @relation(references: [id], fields: [accountID])
+  accountID   String?
 }
 
 model Token {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   userEmail String
-  user      Account @relation(fields: [userEmail], references: [email])
+  user      Account  @relation(fields: [userEmail], references: [email])
 }
