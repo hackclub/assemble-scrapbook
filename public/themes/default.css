@@ -272,6 +272,7 @@
 }
 .post-header-container {
   padding-left: 8px;
+  flex-grow: 1;
 }
 .post-header-name {
   font-size: 16px;

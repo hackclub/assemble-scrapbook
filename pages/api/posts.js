@@ -40,6 +40,7 @@ export const transformPost = p => ({
   text: p.text != null ? p.text : '',
   attachments: p.attachments,
   mux: p.muxPlaybackIDs,
+  claps: p.claps,
   reactions: []
 })
 

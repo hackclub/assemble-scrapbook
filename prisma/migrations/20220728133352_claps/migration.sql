@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Updates" ADD COLUMN     "claps" INTEGER NOT NULL DEFAULT 0;

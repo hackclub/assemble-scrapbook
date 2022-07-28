@@ -5,7 +5,7 @@ const { Readable } = require("stream")
 const share = async req => {
   try {
     const data = JSON.parse(req.body)
-    const { image, description, id } = data
+    const { image, description, id, collaborators } = data
     let form = new FormData()
     form.append('file', Readable.from(Buffer.from(image.split(',')[1] ?? '', 'base64')), `image.${image.substring("data:image/".length, image.indexOf(";base64"))}`)
     const uploadResp = await fetch('https://bucky.hackclub.com', {
@@ -19,12 +19,14 @@ const share = async req => {
     })
     const cdnUrl = (await cdnResp.json())[0]
     console.log('uploaded url', cdnUrl)
+    let collaboratorsArray = collaborators.split(',').map(x => x.replace('@', '').trim())
     await prisma.updates.create({
       data: {
         text: description,
         attachments: [cdnUrl],
         accountID: id,
-        isShip: req.query?.ship == "true" ? true : false
+        isShip: req.query?.ship == "true" ? true : false,
+        collaborators: collaboratorsArray
       }
     })
     return { ok: true, error: null }

@@ -25,6 +25,7 @@ export default function Page({ link, initialData, profile }) {
   const [postData, setPostData] = useState({
     image: '',
     description: '',
+    collaborators: '',
     id,
     name: profile.username
   })
@@ -169,6 +170,13 @@ export default function Page({ link, initialData, profile }) {
               value={postData.description}
               onChange={e =>
                 setPostData({ ...postData, description: e.target.value })
+              }
+            />
+            <Input
+              label="Collaborators (eg. @sampoder, @ian)"
+              value={postData.collaborators}
+              onChange={e =>
+                setPostData({ ...postData, collaborators: e.target.value })
               }
             />
             <div>

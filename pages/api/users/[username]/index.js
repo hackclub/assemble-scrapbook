@@ -17,7 +17,12 @@ export const getProfile = async (value, field = 'username') => {
 export const getPosts = async user => {
   const allUpdates = await getRawPosts(null, {
     where: {
-      Accounts: { username: user.username}
+      OR: [{
+        Accounts: { username: user.username }},
+        {collaborators: {
+          has: user.username,
+        },
+      }]
     }
   })
 

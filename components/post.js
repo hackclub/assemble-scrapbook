@@ -59,9 +59,10 @@ const Post = ({
   mux = [],
   reactions = [],
   postedAt = new Date().toISOString(),
-  slackUrl,
+  claps,
   muted = false,
-  composing
+  composing,
+  mutateFunc
 }) => (
   <section
     className="post"
@@ -71,63 +72,82 @@ const Post = ({
     {profile || !user ? (
       <header className="post-header">
         <time className="post-header-date" dateTime={postedAt}>
-              {formatDate(postedAt)}
-            </time>
+          {formatDate(postedAt)}
+        </time>
       </header>
     ) : (
-      <Link href="/[profile]" as={`/${user.username}`} prefetch={false}>
-        <a className="post-header">
-          <Image
-            loading="lazy"
-            src={user.avatar || emailToPfp(user.email)}
-            width={48}
-            height={48}
-            alt={user.username}
-            className="post-header-avatar"
-          />
-
-          <section className="post-header-container">
-            <span className="post-header-name">
-              <strong>@{user.username}</strong>
-              {user.css && (
-                <Icon
-                  size={24}
-                  glyph="rep"
-                  title="Has a customized profile"
-                  className="post-header-css"
-                />
-              )}
-              {composing && 
-                <span className="composing-tag" style={{ 
-                  backgroundColor: '#eace23',
-                  color: 'white',
-                  padding: '2px',
-                  boxSizing: 'border-box',
-                  display: 'inherit',
-                  borderRadius: '11px',
-                  marginLeft: '6px'
-                }}>
+      <span className="post-header">
+        <Link href="/[profile]" as={`/${user.username}`} prefetch={false}>
+          <a className="post-header">
+            <Image
+              loading="lazy"
+              src={user.avatar || emailToPfp(user.email)}
+              width={48}
+              height={48}
+              alt={user.username}
+              className="post-header-avatar"
+            />
+          </a>
+        </Link>
+        <Link href="/[profile]" as={`/${user.username}`} prefetch={false}>
+          <a className="post-header" style={{flexGrow: 1}}>
+            <section className="post-header-container">
+              <span className="post-header-name">
+                <strong>@{user.username}</strong>
+                {user.css && (
                   <Icon
-                    size={18}
-                    glyph="post"
+                    size={24}
+                    glyph="rep"
                     title="Has a customized profile"
+                    className="post-header-css"
                   />
-                  <span style={{
-                    margin: '0px 4px 0px 2px',
-                    transform: 'translateY(2px)',
-                    verticalAlign: 'middle'
-                  }}>
-                    DRAFT
+                )}
+                {composing && (
+                  <span
+                    className="composing-tag"
+                    style={{
+                      backgroundColor: '#eace23',
+                      color: 'white',
+                      padding: '2px',
+                      boxSizing: 'border-box',
+                      display: 'inherit',
+                      borderRadius: '11px',
+                      marginLeft: '6px'
+                    }}
+                  >
+                    <Icon
+                      size={18}
+                      glyph="post"
+                      title="Has a customized profile"
+                    />
+                    <span
+                      style={{
+                        margin: '0px 4px 0px 2px',
+                        transform: 'translateY(2px)',
+                        verticalAlign: 'middle'
+                      }}
+                    >
+                      DRAFT
+                    </span>
                   </span>
-                </span>
-              }
-            </span>
-            <time className="post-header-date" dateTime={postedAt}>
-              {formatDate(postedAt)}
-            </time>
-          </section>
-        </a>
-      </Link>
+                )}
+              </span>
+              <time className="post-header-date" dateTime={postedAt}>
+                {formatDate(postedAt)}
+              </time>
+            </section>
+          </a>
+        </Link>
+        <section
+          onClick={async () => {
+            await fetch(`/api/clap?id=${id}`)
+            mutateFunc()
+          }}
+        >
+          👏
+          <span style={{ marginLeft: '4px' }}>{claps}</span>
+        </section>
+      </span>
     )}
     <Content>{text}</Content>
     {text && <Cartridges text={text} />}

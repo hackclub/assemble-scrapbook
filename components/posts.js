@@ -1,7 +1,7 @@
 import Masonry from 'react-masonry-css'
 import Post from '../components/post'
 
-const Posts = ({ posts = [], breakpointCols }) => [
+const Posts = ({ posts = [], breakpointCols, mutateFunc }) => [
   <Masonry
     key="masonry"
     breakpointCols={breakpointCols ||{
@@ -15,7 +15,7 @@ const Posts = ({ posts = [], breakpointCols }) => [
     columnClassName="masonry-posts-column"
   >
     {posts.map(post => (
-      <Post key={post.id} {...post} />
+      <Post key={post.id} {...post} mutateFunc={mutateFunc} />
     ))}
   </Masonry>,
   <style jsx global key="masonry-style">{`

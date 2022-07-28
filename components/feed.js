@@ -1,4 +1,4 @@
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 import Message from '../components/message'
 import Posts from '../components/posts'
 import { orderBy } from 'lodash'
@@ -16,7 +16,7 @@ const Feed = ({
     fallbackData: initialData,
     refreshInterval: 5000
   })
-
+  let mutateFunc = () => mutate(src)
   if (error) {
     return (
       <main className="container">
@@ -53,7 +53,7 @@ const Feed = ({
         }
       `}</style>
       {children}
-      <Posts posts={data} />
+      <Posts posts={data} mutateFunc={mutateFunc} />
       {footer}
     </main>
   )
