@@ -5,6 +5,8 @@ import Reaction from '../components/reaction'
 import Feed from '../components/feed'
 import Footer from '../components/footer'
 
+import { useSession } from "next-auth/react"
+
 const Header = ({ reactions, children, theme }) => (
   <>
     <Meta
@@ -113,6 +115,7 @@ const IndexPage = ({ reactions, initialData }) => {
   return (
     <Feed initialData={initialData} footer={<Footer />}>
       <Header reactions={reactions} theme="Never eat soggy WeetBix." />
+      {status === "authenticated" ? <p>Signed in as {session.user.email}</p> : <a href="/api/auth/signin">Sign in</a>}
     </Feed>
   )
 }
