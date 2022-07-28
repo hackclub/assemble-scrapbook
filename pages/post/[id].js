@@ -5,17 +5,16 @@ import { emailToPfp } from '../../lib/email'
 import { useRouter } from 'next/router'
 
 const submissionSuccessOptions = {
-  '': 'Send post!',
+  '': 'Make A Scrap',
   succeeded: 'Post submitted!',
   failed: 'Post failed!',
-  awaiting: <span>
+  awaiting: <span style={{ display: 'inline-flex', alignItems: 'center' }}>
     <img src="https://samherbert.net/svg-loaders/svg-loaders/puff.svg" style={{
-    height: '24px',
-    verticalAlign: 'text-top',
-    marginLeft: '-8px',
-    marginRight: '6px',
-  }} />
-    Sending post...
+      height: '24px',
+      marginLeft: '-8px',
+      marginRight: '6px',
+    }} />
+    Posting...
   </span>
 }
 
@@ -63,7 +62,7 @@ export default function Page({ link, initialData, profile }) {
       [postData.description, postData.link].join('\n') || 'feed me (woof woof)',
     attachments: [
       postData.image ||
-        'https://lawcall.com/wp-content/uploads/2015/03/Dog-Eating.jpg'
+      'https://lawcall.com/wp-content/uploads/2015/03/Dog-Eating.jpg'
     ],
     postedAt: 'just now',
     id,
@@ -119,9 +118,9 @@ export default function Page({ link, initialData, profile }) {
     reader.readAsDataURL(files[0])
   }
 
-  const shipIt = async e => {
+  const shipIt = async (e, ship) => {
     setSubmissionSuccess('awaiting')
-    const { ok, error } = await fetch(`/api/share`, {
+    const { ok, error } = await fetch(`/api/share?ship=${ship}`, {
       method: 'POST',
       body: JSON.stringify(postData)
     }).then(r => r.json())
@@ -178,11 +177,26 @@ export default function Page({ link, initialData, profile }) {
                   !valid() ||
                   ['awaiting', 'succeeded'].includes(submissionSuccess)
                 }
-                onClick={shipIt}
+                onClick={e => shipIt(e, false)}
+                style={{ marginRight: '8px', width: 'fit-content', height: '40px!important' }}
               >
                 {valid()
                   ? submissionSuccessOptions[submissionSuccess]
                   : 'Please fill out all fields.'}
+              </button>
+              <button
+                disabled={
+                  !valid() ||
+                  ['awaiting', 'succeeded'].includes(submissionSuccess)
+                }
+                onClick={e => shipIt(e, true)}
+                style={{
+                  background: 'var(--colors-blue)',
+                  display: ((!valid() ||
+                    ['awaiting', 'succeeded'].includes(submissionSuccess)) ? 'none' : 'inline-block')
+                }}
+              >
+                Make A Ship
               </button>
             </div>
           </div>
@@ -191,8 +205,16 @@ export default function Page({ link, initialData, profile }) {
               👤 Update Your Profile
             </h2>
             <Input
+              label="Username"
+
+              value={userData.username}
+              onChange={e =>
+                setUserData({ ...userData, username: e.target.value })
+              }
+            />
+            <Input
               label="Pronouns (eg. she/hers)"
-              id="project-description"
+
               value={userData.pronouns}
               onChange={e =>
                 setUserData({ ...userData, pronouns: e.target.value })
@@ -200,7 +222,6 @@ export default function Page({ link, initialData, profile }) {
             />
             <Input
               label="CSS URL"
-              id="project-description"
               value={userData.cssURL}
               onChange={e =>
                 setUserData({ ...userData, cssURL: e.target.value })
@@ -208,7 +229,6 @@ export default function Page({ link, initialData, profile }) {
             />
             <Input
               label="Personal Website URL"
-              id="project-description"
               value={userData.website}
               onChange={e =>
                 setUserData({ ...userData, website: e.target.value })
@@ -216,7 +236,6 @@ export default function Page({ link, initialData, profile }) {
             />
             <Input
               label="GitHub URL"
-              id="project-description"
               value={userData.github}
               onChange={e =>
                 setUserData({ ...userData, github: e.target.value })

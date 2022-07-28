@@ -23,7 +23,8 @@ const share = async req => {
       data: {
         text: description,
         attachments: [cdnUrl],
-        accountID: id
+        accountID: id,
+        isShip: req.query?.ship == "true" ? true : false
       }
     })
     return { ok: true, error: null }
