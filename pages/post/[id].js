@@ -3,22 +3,28 @@ import Posts from '../../components/posts'
 import Input from '../../components/input'
 import { emailToPfp } from '../../lib/email'
 import { useRouter } from 'next/router'
+import prisma from '../../lib/prisma'
 
 const submissionSuccessOptions = {
   '': 'Make A Scrap',
   succeeded: 'Post submitted!',
   failed: 'Post failed!',
-  awaiting: <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-    <img src="https://samherbert.net/svg-loaders/svg-loaders/puff.svg" style={{
-      height: '24px',
-      marginLeft: '-8px',
-      marginRight: '6px',
-    }} />
-    Posting...
-  </span>
+  awaiting: (
+    <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+      <img
+        src="https://samherbert.net/svg-loaders/svg-loaders/puff.svg"
+        style={{
+          height: '24px',
+          marginLeft: '-8px',
+          marginRight: '6px'
+        }}
+      />
+      Posting...
+    </span>
+  )
 }
 
-export default function Page({ link, initialData, profile }) {
+export default function Page({ link, initialData, profile, users }) {
   const router = useRouter()
   const { id } = router.query
   const [dropping, setDropping] = useState(false)
@@ -27,33 +33,37 @@ export default function Page({ link, initialData, profile }) {
     description: '',
     collaborators: '',
     id,
-    name: profile.username
+    name: profile.username,
+    title: ''
   })
 
-  const [userData, setUserData] = useState(profile);
-  const [saveUserDataButton, setSaveUserDataButton] = useState('Save your profile.');
+  const [userData, setUserData] = useState(profile)
+  const [saveUserDataButton, setSaveUserDataButton] =
+    useState('Save your profile.')
 
-  const [submissionSuccess, setSubmissionSuccess] = useState('');
+  const [submissionSuccess, setSubmissionSuccess] = useState('')
 
   const saveProfile = () => {
-    setSaveUserDataButton('Saving...');
+    setSaveUserDataButton('Saving...')
     fetch('/api/update-user-data/0', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(userData)
-    }).then(res => res.json()).then(resp => {
-      if (resp.success) {
-        setSaveUserDataButton('Saved!');
-        router.reload()
-      } else {
-        setSaveUserDataButton(resp.reason);
-        setTimeout(() => {
-          setSaveUserDataButton('Save your profile.')
-        }, 5000);
-      }
-    });
+    })
+      .then(res => res.json())
+      .then(resp => {
+        if (resp.success) {
+          setSaveUserDataButton('Saved!')
+          router.reload()
+        } else {
+          setSaveUserDataButton(resp.reason)
+          setTimeout(() => {
+            setSaveUserDataButton('Save your profile.')
+          }, 5000)
+        }
+      })
   }
 
   const preview = () => ({
@@ -71,7 +81,10 @@ export default function Page({ link, initialData, profile }) {
     postedAt: 'just now',
     id,
     composing: true,
-    collaborators: []
+    collaborators: postData.collaborators
+      .split(',')
+      .map(x => x.replace('@', '').trim()),
+    title: postData.title
   })
 
   const onDragOver = e => {
@@ -132,19 +145,23 @@ export default function Page({ link, initialData, profile }) {
     console.log(ok)
     console.log(error)
     setSubmissionSuccess(ok ? 'succeeded' : 'failed')
-    if (ok) setTimeout(() => {
-      location.reload() // refresh page, replace later with built-in updating
-    }, 2000)
+    if (ok)
+      setTimeout(() => {
+        location.reload() // refresh page, replace later with built-in updating
+      }, 2000)
   }
 
-  const valid = () => Object.values(postData).every(x => x !== '')
+  const valid = () => Object.keys(postData).filter(x => x != 'collaborators' && x !=
+    'title').every(x => postData[x] !== '')
 
   return (
     <div>
       <div className="grid">
         <div>
           <div className="info-box">
-            <h1>👋 Hey @{profile.username}, how about sharing a post to Scrapbook?</h1>
+            <h1>
+              👋 Hey @{profile.username}, how about sharing a post to Scrapbook?
+            </h1>
             <div className="dropbox">
               <div
                 className="image-drop"
@@ -168,6 +185,14 @@ export default function Page({ link, initialData, profile }) {
               </div>
             </div>
             <Input
+              label="Scrap / Project Title (optional)"
+              id="project-title"
+              value={postData.title}
+              onChange={e =>
+                setPostData({ ...postData, title: e.target.value })
+              }
+            />
+            <Input
               label="So what are you up to in the image? Elaborate please..."
               id="project-description"
               type="textarea"
@@ -183,6 +208,40 @@ export default function Page({ link, initialData, profile }) {
                 setPostData({ ...postData, collaborators: e.target.value })
               }
             />
+            {postData.collaborators
+              .split(',')
+              .map(x => x.replace('@', '').trim())
+              .filter(x => !users.includes(x) && x).length > 0 && (
+                <>
+                  Could not find users{' '}
+                  {postData.collaborators
+                    .split(',')
+                    .map(x => x.replace('@', '').trim())
+                    .filter(x => !users.includes(x))
+                    .map(
+                      (collab, index) =>
+                        collab && (
+                          <>
+                            <>@{collab}</>
+
+                            {postData.collaborators
+                              .split(',')
+                              .map(x => x.replace('@', '').trim())
+                              .filter(x => !users.includes(x))[index + 1] && (
+                                <>
+                                  {postData.collaborators
+                                    .split(',')
+                                    .map(x => x.replace('@', '').trim())
+                                    .filter(x => !users.includes(x))[index + 2]
+                                    ? ', '
+                                    : ' & '}
+                                </>
+                              )}
+                          </>
+                        )
+                    )}
+                </>
+              )}
             <div>
               <button
                 disabled={
@@ -190,7 +249,11 @@ export default function Page({ link, initialData, profile }) {
                   ['awaiting', 'succeeded'].includes(submissionSuccess)
                 }
                 onClick={e => shipIt(e, false)}
-                style={{ marginRight: '8px', width: 'fit-content', height: '40px!important' }}
+                style={{
+                  marginRight: '8px',
+                  width: 'fit-content',
+                  height: '40px!important'
+                }}
               >
                 {valid()
                   ? submissionSuccessOptions[submissionSuccess]
@@ -204,8 +267,11 @@ export default function Page({ link, initialData, profile }) {
                 onClick={e => shipIt(e, true)}
                 style={{
                   background: 'var(--colors-blue)',
-                  display: ((!valid() ||
-                    ['awaiting', 'succeeded'].includes(submissionSuccess)) ? 'none' : 'inline-block')
+                  display:
+                    !valid() ||
+                      ['awaiting', 'succeeded'].includes(submissionSuccess)
+                      ? 'none'
+                      : 'inline-block'
                 }}
               >
                 Make A Ship
@@ -218,7 +284,6 @@ export default function Page({ link, initialData, profile }) {
             </h2>
             <Input
               label="Username"
-
               value={userData.username}
               onChange={e =>
                 setUserData({ ...userData, username: e.target.value })
@@ -226,7 +291,6 @@ export default function Page({ link, initialData, profile }) {
             />
             <Input
               label="Pronouns (eg. she/hers)"
-
               value={userData.pronouns}
               onChange={e =>
                 setUserData({ ...userData, pronouns: e.target.value })
@@ -254,11 +318,7 @@ export default function Page({ link, initialData, profile }) {
               }
             />
             <div>
-              <button
-                onClick={saveProfile}
-              >
-                {saveUserDataButton}
-              </button>
+              <button onClick={saveProfile}>{saveUserDataButton}</button>
             </div>
           </div>
           <div className="info-box">
@@ -416,10 +476,12 @@ export default function Page({ link, initialData, profile }) {
 export async function getServerSideProps({ query, params }) {
   const { link } = query
   const { id } = params
+  let users = await prisma.account.findMany()
+  users = users.map(x => x.username)
   const { getPosts } = require('../api/posts')
   const { getProfile } = require('../api/users/[username]/index')
   const initialData = await getPosts(4)
   const profile = await getProfile(id, 'id')
   console.log(profile)
-  return { props: { link, initialData, profile } }
+  return { props: { link, initialData, profile, users } }
 }

@@ -116,6 +116,8 @@ const IndexPage = ({ reactions, initialData }) => {
       <Header reactions={reactions} theme="Never eat soggy WeetBix." />
       {/* status === "authenticated" ? <p>Signed in as {session.user.email}</p> : <a href="/api/auth/signin">Sign in</a>
       */}
+      {//session ? <p>Signed in as {session.user.email}</p> : <a href="/api/auth/signin">Sign in</a>
+      }
     </Feed>
   )
 }

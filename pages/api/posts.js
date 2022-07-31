@@ -8,6 +8,13 @@ export const getRawPosts = async (max = null, params = {}) => {
     orderBy: {
       postTime: 'desc'
     },
+    include: {
+      collaborators: {
+        include: {
+          Accounts: true
+        }
+      }
+    },
     ...params
   }
   if (max) opts.take = max
@@ -43,7 +50,8 @@ export const transformPost = p => ({
   claps: p.claps,
   isShip: p.isShip,
   reactions: [],
-  collaborators: p.collaborators
+  collaborators: p.collaborators.map(x=> x.Accounts.username),
+  title: p.title != null ? p.title : '',
 })
 
 export const getPosts = async (max = null) => {

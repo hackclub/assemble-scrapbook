@@ -8,18 +8,24 @@ export default function Judging({ update, reaction }) {
   const [emojiState, setEmojiState] = useState(0)
   const [selected, setSelected] = useState({
     1: reaction?.emoji[0] || '❓',
-    2: reaction?.emoji[1] ||'❓',
-    3: reaction?.emoji[2] ||'❓',
-    4: reaction?.emoji[3] ||'❓',
-    5: reaction?.emoji[4] ||'❓'
+    2: reaction?.emoji[1] || '❓',
+    3: reaction?.emoji[2] || '❓',
+    4: reaction?.emoji[3] || '❓',
+    5: reaction?.emoji[4] || '❓'
   })
-  function upload(selectedToUse){
+  const [saved, setSaved] = useState(false)
+  function upload(selectedToUse) {
+    setSaved(false)
     fetch(`/api/judge?update=${update.id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({emoji: Object.values(selectedToUse).map(x=>(x.native || x))})
+      body: JSON.stringify({
+        emoji: Object.values(selectedToUse).map(x => x.native || x.src || x)
+      })
+    }).then(r => {
+      setSaved(true)
     })
   }
   return (
@@ -49,11 +55,18 @@ export default function Judging({ update, reaction }) {
             background: 'var(--colors-slate)',
             padding: '8px',
             borderRadius: '20px',
-            paddingTop: '10px'
+            paddingTop: '10px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
           className="clap"
         >
-          {selected[1].native || selected[1]}
+          {selected[1].native ||
+           ((selected[1].src || selected[1].includes('http')) && (
+            <img src={selected[1].src || selected[1]} height="40px" />
+          )) ||
+            selected[1]}
         </span>
         <span
           onClick={async () => {
@@ -63,11 +76,18 @@ export default function Judging({ update, reaction }) {
             background: 'var(--colors-slate)',
             padding: '8px',
             borderRadius: '20px',
-            paddingTop: '10px'
+            paddingTop: '10px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
           className="clap"
         >
-          {selected[2].native || selected[2]}
+          {selected[2].native ||
+            ((selected[2].src || selected[2].includes('http')) && (
+              <img src={selected[2].src || selected[2]} height="40px" />
+            )) ||
+            selected[2]}
         </span>
         <span
           onClick={async () => {
@@ -77,11 +97,18 @@ export default function Judging({ update, reaction }) {
             background: 'var(--colors-slate)',
             padding: '8px',
             borderRadius: '20px',
-            paddingTop: '10px'
+            paddingTop: '10px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
           className="clap"
         >
-          {selected[3].native || selected[3]}
+          {selected[3].native ||
+            ((selected[3].src || selected[3].includes('http')) && (
+              <img src={selected[3].src || selected[3]} height="40px" />
+            )) ||
+            selected[3]}
         </span>
         <span
           onClick={async () => {
@@ -91,11 +118,18 @@ export default function Judging({ update, reaction }) {
             background: 'var(--colors-slate)',
             padding: '8px',
             borderRadius: '20px',
-            paddingTop: '10px'
+            paddingTop: '10px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
           className="clap"
         >
-          {selected[4].native || selected[4]}
+          {selected[4].native ||
+            ((selected[4].src || selected[4].includes('http')) && (
+              <img src={selected[4].src || selected[4]} height="40px" />
+            )) ||
+            selected[4]}
         </span>
         <span
           onClick={async () => {
@@ -105,13 +139,22 @@ export default function Judging({ update, reaction }) {
             background: 'var(--colors-slate)',
             padding: '8px',
             borderRadius: '20px',
-            paddingTop: '10px'
+            paddingTop: '10px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
           className="clap"
         >
-          {selected[5].native || selected[5]}
+          {selected[5].native ||
+           ((selected[5].src || selected[5].includes('http')) && (
+            <img src={selected[5].src || selected[5]} height="40px" />
+          )) ||
+            selected[5]}
         </span>
+       
       </div>
+      {saved && <><br />✅ Saved!</>}
       <div
         style={{
           position: 'absolute',
@@ -145,6 +188,50 @@ export default function Judging({ update, reaction }) {
             setEmojiState(0)
             upload({ ...selected, ...newData })
           }}
+          custom={[
+            {
+              id: 'github',
+              name: 'GitHub',
+              emojis: [
+                {
+                  id: 'octocat',
+                  name: 'Octocat',
+                  keywords: ['github'],
+                  skins: [
+                    {
+                      src: 'https://emoji.slack-edge.com/T0266FRGM/jankman/09159ada2ee32987.png'
+                    }
+                  ]
+                },
+                {
+                  id: 'shipit',
+                  name: 'Squirrel',
+                  keywords: ['github'],
+                  skins: [
+                    {
+                      src: 'https://emoji.slack-edge.com/T0266FRGM/see/3d0731c7ba6f4af1.png'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'gifs',
+              name: 'GIFs',
+              emojis: [
+                {
+                  id: 'party_parrot',
+                  name: 'Party Parrot',
+                  keywords: ['dance', 'dancing'],
+                  skins: [
+                    {
+                      src: 'https://emoji.slack-edge.com/T0266FRGM/party-dinosaur/d6219c5b10086a16.gif'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]}
         />
       </div>
       <style>{`
@@ -161,7 +248,7 @@ export async function getServerSideProps(ctx) {
   let reaction = await prisma.reactions.findFirst({
     where: {
       cookie: cookies.get('assemble-judging')
-    },
+    }
   })
   let update = await prisma.updates.findFirst({
     where: {

@@ -13,22 +13,33 @@ export default function HackBoard() {
             {data &&
               data[x] &&
               (data[x].url.slice(-4) == 'm3u8' ? (
-                <video style={{
-                  width: 'calc(100vw / 15)',
-                  height: '10vh',
-                  objectFit: 'cover'
-                }} autoPlay muted>
-                  <source src={data[x].url} type="application/x-mpegURL" />
-                </video>
-              ) : (
-                <img
-                  src={data[x].url}
+                <video
                   style={{
                     width: 'calc(100vw / 15)',
                     height: '10vh',
                     objectFit: 'cover'
                   }}
-                />
+                  autoPlay
+                  muted
+                >
+                  <source src={data[x].url} type="application/x-mpegURL" />
+                </video>
+              ) : (
+                <div style={{
+                  width: 'calc(100vw / 15)',
+                  height: '10vh',
+                  objectFit: 'cover'
+                }}>
+                  <small style={{position: 'absolute', top: 5, left: 5}}>@{data[x].username}</small>
+                  <img
+                    src={data[x].url}
+                    style={{
+                      width: 'calc(100vw / 15)',
+                      height: '10vh',
+                      objectFit: 'cover'
+                    }}
+                  />
+                </div>
               ))}
           </div>
         ))}

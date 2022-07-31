@@ -68,7 +68,8 @@ function Post({
   isShip,
   composing,
   mutateFunc,
-  collaborators
+  collaborators,
+  title
 }) {
   let play = useSound([`/api/sound.mp3?id=${id}`])[0]
   return (
@@ -172,6 +173,7 @@ function Post({
           </section>)}
         </span>
       )}
+      <b>{title}</b>
       <Content>{text}</Content>
       {collaborators && (collaborators[0] && (
         <div style={{ color: 'var(--colors-muted)', display: 'inline-block' }}>

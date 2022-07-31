@@ -8,38 +8,48 @@ datasource db {
 }
 
 model Account {
-  id        String      @id @default(cuid())
-  email     String      @unique(map: "Accounts.email_unique")
-  username  String      @unique(map: "Accounts.username_unique")
-  cssURL    String?
-  stream    String?
-  website   String?
-  github    String?
-  pronouns  String?
-  updates   Updates[]
-  tokens    Token[]
+  id       String    @id @default(cuid())
+  email    String    @unique(map: "Accounts.email_unique")
+  username String    @unique(map: "Accounts.username_unique")
+  cssURL   String?
+  stream   String?
+  website  String?
+  github   String?
+  pronouns String?
+  updates  Updates[]
+  collabs  Collab[]
+  tokens   Token[]
+}
+
+model Collab {
+  id        String   @id @default(cuid())
+  updateId  String
+  update    Updates  @relation(references: [id], fields: [updateId])
+  accountUsername String
+  Accounts  Account? @relation(references: [username], fields: [accountUsername])
 }
 
 model Updates {
   id            String      @id @default(cuid())
   postTime      DateTime?   @default(now())
   text          String?
+  title          String?
   attachments   String[]
   isShip        Boolean?    @default(false)
   Accounts      Account?    @relation(references: [id], fields: [accountID])
   accountID     String?
   postNumber    Int         @default(autoincrement())
   claps         Int         @default(0)
-  collaborators String[]
+  collaborators  Collab[]
   reactions     Reactions[]
 }
 
 model Reactions {
-  id        String   @id @default(cuid())
-  cookie    String
-  emoji     String[]
-  updateId  String
-  update    Updates  @relation(references: [id], fields: [updateId])
+  id       String   @id @default(cuid())
+  cookie   String
+  emoji    String[]
+  updateId String
+  update   Updates  @relation(references: [id], fields: [updateId])
 }
 
 model Token {

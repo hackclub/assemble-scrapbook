@@ -20,7 +20,9 @@ export const getPosts = async user => {
       OR: [{
         Accounts: { username: user.username }},
         {collaborators: {
-          has: user.username,
+          some: {
+            accountUsername: user.username
+          },
         },
       }]
     }
