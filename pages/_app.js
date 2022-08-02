@@ -34,7 +34,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
 
   return (
     <>
-      <Nav />
+      <Nav authStatus={authStatus} />
       <NProgress color={'#ec3750'} />
       <Component {...pageProps} authStatus={authStatus} authData={authStatus.data} setAuthData={setAuthData} />
     </>

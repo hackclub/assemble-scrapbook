@@ -4,28 +4,51 @@ import { useRouter } from 'next/router'
 import Icon from '@hackclub/icons'
 import Flag from './flag'
 
-const Join = () => (
-  <a href="https://hackclub.com/slack/" className="badge">
-    Join
-    <style jsx>{`
-      a {
-        background-color: var(--colors-muted);
-        color: var(--colors-background);
-        padding: 3px 12px 1px;
-        margin-left: 16px;
-        text-decoration: none;
-        text-transform: uppercase;
-        transition: 0.125s background-color ease-in-out;
-      }
-      a:hover,
-      a:focus {
-        background-color: var(--colors-purple);
-      }
-    `}</style>
-  </a>
+const Join = ({ authStatus }) => (
+  <>
+    {authStatus != 'authed' ? (
+      <a href="/login/" className="badge">
+        Login
+        <style jsx>{`
+          a {
+            background-color: var(--colors-muted);
+            color: var(--colors-background);
+            padding: 3px 12px 1px;
+            margin-left: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: 0.125s background-color ease-in-out;
+          }
+          a:hover,
+          a:focus {
+            background-color: var(--colors-purple);
+          }
+        `}</style>
+      </a>
+    ) : (
+      <a href="/login/" className="badge">
+        Post To Your Scrapbook
+        <style jsx>{`
+          a {
+            background-color: var(--colors-purple);
+            color: var(--colors-background);
+            padding: 3px 12px 1px;
+            margin-left: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: 0.125s background-color ease-in-out;
+          }
+          a:hover,
+          a:focus {
+            background-color: var(--colors-white);
+          }
+        `}</style>
+      </a>
+    )}
+  </>
 )
 
-const Nav = () => {
+const Nav = ({ authStatus }) => {
   const { pathname } = useRouter()
   const home = pathname === '/'
   // This is a hack for using the right link on custom domains
@@ -57,7 +80,7 @@ const Nav = () => {
       >
         <Icon glyph="github" size={32} />
       </a>
-      {home && <Join />}
+      {home && <Join authStatus={authStatus} />}
     </nav>
   )
 }
