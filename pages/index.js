@@ -4,7 +4,6 @@ import Meta from '@hackclub/meta'
 import Reaction from '../components/reaction'
 import Feed from '../components/feed'
 import Footer from '../components/footer'
-import { useSession } from "next-auth/react"
 
 const Header = ({ reactions, children, theme }) => (
   <>
@@ -109,15 +108,11 @@ const Header = ({ reactions, children, theme }) => (
   </>
 )
 
-const IndexPage = ({ reactions, initialData }) => {
-
+const IndexPage = ({ reactions, initialData, authStatus }) => {
   return (
     <Feed initialData={initialData} footer={<Footer />}>
       <Header reactions={reactions} theme="Never eat soggy WeetBix." />
-      {/* status === "authenticated" ? <p>Signed in as {session.user.email}</p> : <a href="/api/auth/signin">Sign in</a>
-      */}
-      {//session ? <p>Signed in as {session.user.email}</p> : <a href="/api/auth/signin">Sign in</a>
-      }
+      {JSON.stringify(authStatus)}
     </Feed>
   )
 }
