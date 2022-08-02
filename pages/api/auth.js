@@ -1,6 +1,9 @@
+export const exposeIdToFrontend = true;
+
 import Cookies from "cookies";
 import crypto from "node:crypto";
 import fetch from "node-fetch";
+import prisma from "../../lib/prisma";
 
 export default async function (req, res) {
   const cookies = new Cookies(req, res);
@@ -28,8 +31,22 @@ export default async function (req, res) {
     httpOnly: true,
   });
 
-  // sam do stuff with response.user_email and response.user_id here
-  // provide the user ID here since you know it's true (not spoofed)
+    try {
+        const firstUser = await prisma.account.findFirst({
+            where: {
+                email: response.user_email
+            }
+        });
+        console.log({ firstUser })
+        cookies.set('scrapbook_user_auth_id', firstUser.id, {
+            overwrite: true,
+            expires: new Date(Date.now() + sevenDaysInMs),
+            httpOnly: !exposeIdToFrontend,
+        });
+    } catch (err) {
+        
+    }
+
 
   cookies.set("scrapbook_user_data_json", JSON.stringify({
     email: response.user_email,
