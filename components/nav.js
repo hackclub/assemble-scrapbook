@@ -6,7 +6,7 @@ import Flag from './flag'
 
 const Join = ({ authStatus }) => (
   <>
-    {authStatus != 'authed' ? (
+    {authStatus.status != 'authed' ? (
       <a href="/login/" className="badge">
         Login
         <style jsx>{`
