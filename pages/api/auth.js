@@ -5,6 +5,7 @@ import crypto from "node:crypto";
 import fetch from "node-fetch";
 import prisma from "../../lib/prisma";
 
+
 export default async function (req, res) {
   const cookies = new Cookies(req, res);
   if (cookies.get("assemble_use_localhost") === "true")
@@ -34,7 +35,31 @@ export default async function (req, res) {
     try {
         const firstUser = await prisma.account.findFirst({
             where: {
-                email: response.user_email
+                assembleId: response.user_id
+            }
+        }); // we need to handle user creation here, or migrate everyone's emails
+        // also, we need to ensure that emails are unique
+        // another key we could use is the id_token or the user_id from Assemble ID
+        console.log({ firstUser })
+        cookies.set('scrapbook_user_auth_id', firstUser.id, {
+            overwrite: true,
+            expires: new Date(Date.now() + sevenDaysInMs),
+            httpOnly: !exposeIdToFrontend,
+        });
+    } catch (err) {
+      try {
+        await prisma.account.create({
+          data: {
+            assembleId: response.user_id,
+            email: response.user_email,
+            username: ((email => {
+              return (Math.floor(Math.random() * 10000) + '').substring(0, 4) + email.split('@')[0] + '.' + email.split('@')[1].split('.').join('');
+            })(response.user_email).split('').filter(char => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_.-'.split('').includes(char)).join('').substring(0, 20) || Math.floor(Math.random() * 100000) + '').padStart(3, '0'),
+          }
+        });
+        const firstUser = await prisma.account.findFirst({
+            where: {
+                assembleId: response.user_id
             }
         });
         console.log({ firstUser })
@@ -43,8 +68,10 @@ export default async function (req, res) {
             expires: new Date(Date.now() + sevenDaysInMs),
             httpOnly: !exposeIdToFrontend,
         });
-    } catch (err) {
-        
+      } catch (err) {
+        console.error(err);
+        return res.status(500).send(`It looks like your user already exists. ID: ${response.user_id}, EMAIL: ${response.user_email}. Please DM this error to an Assemble team member.`);
+      }
     }
 
 

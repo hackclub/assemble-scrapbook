@@ -4,7 +4,7 @@ import Picker from '@emoji-mart/react'
 import { useState } from 'react'
 import Cookies from 'cookies'
 
-export default function Judging({ update, reaction }) {
+export default function Judging({ update, reaction, emojiArray, colorEmojis }) {
   const [emojiState, setEmojiState] = useState(0)
   const [selected, setSelected] = useState({
     1: reaction?.emoji[0] || '❓',
@@ -190,47 +190,61 @@ export default function Judging({ update, reaction }) {
           }}
           custom={[
             {
-              id: 'github',
-              name: 'GitHub',
+              id: 'slack',
+              name: 'Slack',
               emojis: [
-                {
-                  id: 'octocat',
-                  name: 'Octocat',
-                  keywords: ['github'],
-                  skins: [
-                    {
-                      src: 'https://emoji.slack-edge.com/T0266FRGM/jankman/09159ada2ee32987.png'
-                    }
-                  ]
-                },
-                {
-                  id: 'shipit',
-                  name: 'Squirrel',
-                  keywords: ['github'],
-                  skins: [
-                    {
-                      src: 'https://emoji.slack-edge.com/T0266FRGM/see/3d0731c7ba6f4af1.png'
-                    }
-                  ]
-                }
+                ...emojiArray
               ]
             },
             {
-              id: 'gifs',
-              name: 'GIFs',
+              id: 'slack-colors',
+              name: 'Colors',
               emojis: [
-                {
-                  id: 'party_parrot',
-                  name: 'Party Parrot',
-                  keywords: ['dance', 'dancing'],
-                  skins: [
-                    {
-                      src: 'https://emoji.slack-edge.com/T0266FRGM/party-dinosaur/d6219c5b10086a16.gif'
-                    }
-                  ]
-                }
+                ...colorEmojis
               ]
             }
+            // {
+            //   id: 'github',
+            //   name: 'GitHub',
+            //   emojis: [
+            //     {
+            //       id: 'octocat',
+            //       name: 'Octocat',
+            //       keywords: ['github'],
+            //       skins: [
+            //         {
+            //           src: 'https://emoji.slack-edge.com/T0266FRGM/jankman/09159ada2ee32987.png'
+            //         }
+            //       ]
+            //     },
+            //     {
+            //       id: 'shipit',
+            //       name: 'Squirrel',
+            //       keywords: ['github'],
+            //       skins: [
+            //         {
+            //           src: 'https://emoji.slack-edge.com/T0266FRGM/see/3d0731c7ba6f4af1.png'
+            //         }
+            //       ]
+            //     }
+            //   ]
+            // },
+            // {
+            //   id: 'gifs',
+            //   name: 'GIFs',
+            //   emojis: [
+            //     {
+            //       id: 'party_parrot',
+            //       name: 'Party Parrot',
+            //       keywords: ['dance', 'dancing'],
+            //       skins: [
+            //         {
+            //           src: 'https://emoji.slack-edge.com/T0266FRGM/party-dinosaur/d6219c5b10086a16.gif'
+            //         }
+            //       ]
+            //     }
+            //   ]
+            // }
           ]}
         />
       </div>
@@ -262,6 +276,29 @@ export async function getServerSideProps(ctx) {
   let emojis = await fetch('http://badger-zeta.vercel.app/api/emoji').then(r =>
     r.json()
   )
-  console.log(reaction)
-  return { props: { update, emojis, reaction } }
+  console.log(reaction);
+  const colorEmojis = [];
+  const emojiArray = (() => {
+    const values = Object.values(emojis);
+    return Object.keys(emojis).map((key, i) => {
+      return {
+        id: key.toLowerCase(),
+        name: key,
+        keywords: [key.toLowerCase(), ...key.split('_'), ...key.split('-')],
+        skins: [
+          {
+            src: values[i]?.startsWith('alias:') ? emojis[values[i].substring(6)] : values[i]
+          }
+        ]
+      };
+    }).filter(key => {
+      const filter = !(+key.name >= 0 && +key.name <= 200000 && key.name.length == 6) &&
+      !(key.name.startsWith('color_')) &&
+      !(key.name.startsWith('balloon_')) &&
+      !(key.name.startsWith('p_'));
+      if (!filter) colorEmojis.push(key); // push all of the color emojis to their own section
+      return filter;
+    })
+  })();
+  return { props: { update, emojis, reaction, emojiArray, colorEmojis } }
 }
