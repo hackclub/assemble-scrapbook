@@ -84,6 +84,15 @@ export default async function (req, res) {
     httpOnly: false,
   });
   console.log(response);
+  const path = cookies.get('assemble_continue');
+  if (path) {
+    cookies.set('assemble_continue', '', {
+      overwrite: true,
+      expires: new Date(Date.now()),
+      httpOnly: true
+    });
+    return res.redirect(path);
+  }
   res.redirect("/");
 }
 

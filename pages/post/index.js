@@ -481,6 +481,11 @@ export async function getServerSideProps({ query, params, req, res }) {
     const { check } = require('../api/get-auth-state')
     if (await check(req, res) == false) {
 
+      cookies.set('assemble_continue', '/post', {
+        overwrite: true,
+        expires: new Date(Date.now() + 1000 * 60 * 10),
+        httpOnly: true,
+      });
         res.statusCode = 302
         res.setHeader('Location', `/login`);
         res.end();

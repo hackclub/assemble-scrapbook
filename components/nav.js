@@ -26,7 +26,7 @@ const Join = ({ authStatus }) => (
         `}</style>
       </a>
     ) : (
-      <a href="/login/" className="badge">
+      <a href="/post" className="badge">
         Post To Your Scrapbook
         <style jsx>{`
           a {

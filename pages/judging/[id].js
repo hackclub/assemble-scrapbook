@@ -258,7 +258,20 @@ export default function Judging({ update, reaction, emojiArray, colorEmojis }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const cookies = new Cookies(ctx.req, ctx.res)
+  const cookies = new Cookies(ctx.req, ctx.res);
+  const { check } = require('../api/get-auth-state.js');
+  const authed = await check(ctx.req, ctx.res);
+  if (!authed) {
+    cookies.set('assemble_continue', '/judging/' + ctx.params.id, {
+      overwrite: true,
+      expires: new Date(Date.now() + 1000 * 60 * 10),
+      httpOnly: true,
+    });
+    ctx.res.statusCode = 302
+    ctx.res.setHeader('Location', `/login`);
+    ctx.res.end();
+    return {props: {}}
+  }
   let reaction = await prisma.reactions.findFirst({
     where: {
       cookie: cookies.get('assemble-judging')
