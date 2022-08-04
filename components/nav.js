@@ -80,7 +80,7 @@ const Nav = ({ authStatus }) => {
       >
         <Icon glyph="github" size={32} />
       </a>
-      {home && <Join authStatus={authStatus} />}
+      <Join authStatus={authStatus} />
     </nav>
   )
 }
