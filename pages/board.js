@@ -30,7 +30,7 @@ export default function HackBoard() {
                   height: '10vh',
                   objectFit: 'cover'
                 }}>
-                  <small style={{position: 'absolute', top: 5, left: 5}}>@{data[x].username}</small>
+                  <small style={{ position: 'absolute', top: 5, left: 5, background: 'rgba(0, 0, 0, 0.5)', borderRadius: '8px', padding: '0px 4px' }}>@{data[x].username}</small>
                   <img
                     src={data[x].url}
                     style={{

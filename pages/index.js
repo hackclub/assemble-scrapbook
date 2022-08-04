@@ -112,7 +112,6 @@ const IndexPage = ({ reactions, initialData, authStatus }) => {
   return (
     <Feed initialData={initialData} footer={<Footer />}>
       <Header reactions={reactions} theme="Never eat soggy WeetBix." />
-      {JSON.stringify(authStatus)}
     </Feed>
   )
 }
