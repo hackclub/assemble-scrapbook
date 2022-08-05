@@ -111,7 +111,7 @@ const Header = ({ reactions, children, theme }) => (
 const IndexPage = ({ reactions, initialData, authStatus }) => {
   return (
     <Feed initialData={initialData} footer={<Footer />}>
-      <Header reactions={reactions} theme="Never eat soggy WeetBix." />
+      <Header reactions={reactions} theme="Undisclosed theme" />
     </Feed>
   )
 }
