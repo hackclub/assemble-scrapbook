@@ -95,7 +95,11 @@ function Post({
             <a className="post-header">
               <Image
                 loading="lazy"
-                src={user.avatar || emailToPfp(user.email)}
+                src={
+                  user.avatar ||
+                  emailToPfp(user.email) ||
+                  'https://github.com/ghost.png'
+                }
                 width={48}
                 height={48}
                 alt={user.username}
@@ -152,30 +156,32 @@ function Post({
               </section>
             </a>
           </Link>
-          {!composing && (<section
-            onClick={async () => {
-              play()
-              await fetch(`/api/clap?id=${id}`)
-              mutate('/api/posts')
-            }}
-            style={{
-              background: 'var(--colors-slate)',
-              padding: '8px',
-              borderRadius: '999px',
-              paddingTop: '10px'
-            }}
-            className="clap"
-          >
-            👏
-            <span style={{ marginLeft: '4px', marginRight: '3px' }}>
-              {claps}
-            </span>
-          </section>)}
+          {!composing && (
+            <section
+              onClick={async () => {
+                // play()
+                await fetch(`/api/clap?id=${id}`)
+                mutate('/api/posts')
+              }}
+              style={{
+                background: 'var(--colors-slate)',
+                padding: '8px',
+                borderRadius: '999px',
+                paddingTop: '10px'
+              }}
+              className="clap"
+            >
+              👏
+              <span style={{ marginLeft: '4px', marginRight: '3px' }}>
+                {claps}
+              </span>
+            </section>
+          )}
         </span>
       )}
       <b>{title}</b>
       <Content>{text}</Content>
-      {collaborators && (collaborators[0] && (
+      {collaborators && collaborators[0] && (
         <div style={{ color: 'var(--colors-muted)', display: 'inline-block' }}>
           with{' '}
           {collaborators.map((collab, index) => (
@@ -189,7 +195,7 @@ function Post({
             </>
           ))}
         </div>
-      ))}
+      )}
       {(attachments.length > 0 || mux.length > 0) && (
         <div className="post-attachments">
           {filter(attachments, a =>

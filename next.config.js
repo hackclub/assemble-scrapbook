@@ -14,7 +14,8 @@ module.exports = withMDX({
       'i.imgur.com',
       'i.imgur.com',
       'placedog.net',
-      'www.gravatar.com'
+      'www.gravatar.com',
+      'github.com'
     ]
   },
   async rewrites() {
@@ -87,9 +88,9 @@ module.exports = withMDX({
     config.module.rules.push({
       test: /\.mp3$/,
       use: {
-        loader: 'file-loader',
-      },
-    });
-    return config;
-  },
+        loader: 'file-loader'
+      }
+    })
+    return config
+  }
 })

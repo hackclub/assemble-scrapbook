@@ -1,6 +1,6 @@
 // basically /post/[id].js except it uses cookies for auth
 
-import Cookies from 'cookies';
+import Cookies from 'cookies'
 
 import React, { useState } from 'react'
 import Posts from '../../components/posts'
@@ -80,7 +80,7 @@ export default function Page({ link, initialData, profile, users }) {
       [postData.description, postData.link].join('\n') || 'feed me (woof woof)',
     attachments: [
       postData.image ||
-      'https://lawcall.com/wp-content/uploads/2015/03/Dog-Eating.jpg'
+        'https://lawcall.com/wp-content/uploads/2015/03/Dog-Eating.jpg'
     ],
     postedAt: 'just now',
     id,
@@ -155,8 +155,10 @@ export default function Page({ link, initialData, profile, users }) {
       }, 2000)
   }
 
-  const valid = () => Object.keys(postData).filter(x => x != 'collaborators' && x !=
-    'title').every(x => postData[x] !== '')
+  const valid = () =>
+    Object.keys(postData)
+      .filter(x => x != 'collaborators' && x != 'title')
+      .every(x => postData[x] !== '')
 
   return (
     <div>
@@ -216,36 +218,36 @@ export default function Page({ link, initialData, profile, users }) {
               .split(',')
               .map(x => x.replace('@', '').trim())
               .filter(x => !users.includes(x) && x).length > 0 && (
-                <>
-                  Could not find users{' '}
-                  {postData.collaborators
-                    .split(',')
-                    .map(x => x.replace('@', '').trim())
-                    .filter(x => !users.includes(x))
-                    .map(
-                      (collab, index) =>
-                        collab && (
-                          <>
-                            <>@{collab}</>
+              <>
+                Could not find users{' '}
+                {postData.collaborators
+                  .split(',')
+                  .map(x => x.replace('@', '').trim())
+                  .filter(x => !users.includes(x))
+                  .map(
+                    (collab, index) =>
+                      collab && (
+                        <>
+                          <>@{collab}</>
 
-                            {postData.collaborators
-                              .split(',')
-                              .map(x => x.replace('@', '').trim())
-                              .filter(x => !users.includes(x))[index + 1] && (
-                                <>
-                                  {postData.collaborators
-                                    .split(',')
-                                    .map(x => x.replace('@', '').trim())
-                                    .filter(x => !users.includes(x))[index + 2]
-                                    ? ', '
-                                    : ' & '}
-                                </>
-                              )}
-                          </>
-                        )
-                    )}
-                </>
-              )}
+                          {postData.collaborators
+                            .split(',')
+                            .map(x => x.replace('@', '').trim())
+                            .filter(x => !users.includes(x))[index + 1] && (
+                            <>
+                              {postData.collaborators
+                                .split(',')
+                                .map(x => x.replace('@', '').trim())
+                                .filter(x => !users.includes(x))[index + 2]
+                                ? ', '
+                                : ' & '}
+                            </>
+                          )}
+                        </>
+                      )
+                  )}
+              </>
+            )}
             <div>
               <button
                 disabled={
@@ -273,7 +275,7 @@ export default function Page({ link, initialData, profile, users }) {
                   background: 'var(--colors-blue)',
                   display:
                     !valid() ||
-                      ['awaiting', 'succeeded'].includes(submissionSuccess)
+                    ['awaiting', 'succeeded'].includes(submissionSuccess)
                       ? 'none'
                       : 'inline-block'
                 }}
@@ -478,22 +480,21 @@ export default function Page({ link, initialData, profile, users }) {
 }
 
 export async function getServerSideProps({ query, params, req, res }) {
-    const { check } = require('../api/get-auth-state')
-    if (await check(req, res) == false) {
-
-      cookies.set('assemble_continue', '/post', {
-        overwrite: true,
-        expires: new Date(Date.now() + 1000 * 60 * 10),
-        httpOnly: true,
-      });
-        res.statusCode = 302
-        res.setHeader('Location', `/login`);
-        res.end();
-        return {props: {}}
-    }
-  const cookies = new Cookies(req, res);
-  const id = cookies.get('scrapbook_user_auth_id');
-  console.log({ id})
+  const { check } = require('../api/get-auth-state')
+  const cookies = new Cookies(req, res)
+  if ((await check(req, res)) == false) {
+    cookies.set('assemble_continue', '/post', {
+      overwrite: true,
+      expires: new Date(Date.now() + 1000 * 60 * 10),
+      httpOnly: true
+    })
+    res.statusCode = 302
+    res.setHeader('Location', `/login`)
+    res.end()
+    return { props: {} }
+  }
+  const id = cookies.get('scrapbook_user_auth_id')
+  console.log({ id })
   const { link } = query
   let users = await prisma.account.findMany()
   users = users.map(x => x.username)
