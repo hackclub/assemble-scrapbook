@@ -67,7 +67,7 @@ const share = async req => {
         }
       }
     })
-    return { ok: true, error: null }
+    return { ok: true, error: null, postNumber: postNumber + 1 }
   } catch (error) {
     console.log(error)
     return { ok: false, error }
@@ -77,7 +77,7 @@ const share = async req => {
 export default async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   const sharedPost = await share(req)
-  await fetch(`https://scrapbook.assemble.hackclub.com/api/print/${sharedPost.id}`)
+  await fetch(`https://scrapbook.assemble.hackclub.com/api/print/${sharedPost?.postNumber}`)
   res.json(sharedPost)
 }
 
