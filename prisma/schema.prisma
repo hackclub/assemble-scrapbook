@@ -39,7 +39,7 @@ model Updates {
   isShip        Boolean?    @default(false)
   Accounts      Account?    @relation(references: [id], fields: [accountID])
   accountID     String?
-  postNumber    Int         @default(autoincrement())
+  postNumber    Int?        
   claps         Int         @default(0)
   collaborators  Collab[]
   reactions     Reactions[]

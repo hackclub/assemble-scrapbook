@@ -30,7 +30,9 @@ const Header = ({ reactions, children, theme }) => (
           Scrapbook @ Assemble
         </p>
       )}
-      <h1 style={{textDecoration: 'underline'}}>{theme ? theme : 'Scrapbook @ Assemble'}</h1>
+      <h1 style={{ textDecoration: 'underline' }}>
+        {theme ? theme : 'Scrapbook @ Assemble'}
+      </h1>
       <p>
         A diary of everything <a href="https://hackclub.com/">Hack Clubbers</a>{' '}
         get up to at{' '}
@@ -109,8 +111,12 @@ const Header = ({ reactions, children, theme }) => (
 )
 
 const IndexPage = ({ post }) => (
-  <Feed initialData={[post]} footer={<Footer />} doNotFetchAdditionalData={true}>
-    <Header reactions={{}} theme="Never eat soggy WeetBix." />
+  <Feed
+    initialData={[post]}
+    footer={<Footer />}
+    doNotFetchAdditionalData={true}
+  >
+    <Header reactions={{}} theme="Scraps @ Assemble." />
   </Feed>
 )
 
