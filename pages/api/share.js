@@ -76,7 +76,9 @@ const share = async req => {
 
 export default async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.json(await share(req))
+  const sharedPost = await share(req)
+  await fetch(`https://scrapbook.assemble.hackclub.com/api/print/${sharedPost.id}`)
+  res.json(sharedPost)
 }
 
 export const config = {
