@@ -49,7 +49,6 @@ const share = async req => {
         isShip: true
       }
     })
-    console.log(mostRecentShip)
     await prisma.updates.create({
       data: {
         text: description,
