@@ -10,4 +10,4 @@
 - [x] update github link
 - [x] never eat soggy eweetbix
 - [x] edit 'hack clubbers' lines
-- [ ] about page should be a modal with new copy
+- [x] about page should be a modal with new copy

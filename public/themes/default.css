@@ -60,7 +60,6 @@
   .nav-link-home {
     margin-left: 12px;
   }
-
 }
 
 @media (max-width: 32em) {
@@ -427,3 +426,6 @@ a.post-attachment:first-child:last-child {
   margin-right: 4px;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
