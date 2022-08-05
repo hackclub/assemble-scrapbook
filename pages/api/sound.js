@@ -1,5 +1,4 @@
-
-export default async function handler(req, res){
+export default async function handler(req, res) {
   let sounds = [
     '/sounds/909-drums.mp3',
     '/sounds/bite.mp3',

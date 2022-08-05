@@ -71,7 +71,7 @@ function Post({
   collaborators,
   title
 }) {
-  let play = useSound([`/api/sound.mp3?id=${id}`])[0]
+  let play = useSound([`/api/sound?id=${id}`])[0]
   return (
     <section
       className="post"
@@ -159,7 +159,7 @@ function Post({
           {!composing && (
             <section
               onClick={async () => {
-                // play()
+                play()
                 await fetch(`/api/clap?id=${id}`)
                 mutate('/api/posts')
               }}
