@@ -111,69 +111,66 @@ export default function Page({ link, initialData, profile, users }) {
     e.stopPropagation()
   }
 
+  const uploadFile = async file => {
+    const fileName = file.name
+    const contentType = file.type
+
+    let uploadUrl
+    let fileUrl
+
+    // GET S3 UPLOAD URL
+    try {
+      const uploadData = await fetch(
+        'https://n56yv5yuc7.execute-api.us-east-1.amazonaws.com/default/assemble-images-uploader',
+        {
+          body: JSON.stringify({ fileName, contentType }),
+          method: 'POST'
+        }
+      ).then(resp => resp.json())
+
+      uploadUrl = uploadData.uploadURL
+      fileUrl = uploadData.fileURL
+    } catch (e) {
+      alert(
+        'Failed to get upload URL. Please try again, then see your console (and tell an organizer!)'
+      )
+      console.log(e)
+      return
+    }
+
+    // Upload file to s3
+    try {
+      await fetch(uploadUrl, {
+        body: file,
+        method: 'PUT',
+        headers: { 'Content-Type': contentType }
+      })
+    } catch (e) {
+      alert('Failed to upload file to S3. Please try again.')
+      console.log(e)
+      return
+    }
+
+    console.log('Done!', fileUrl)
+
+    setFileLink(fileUrl)
+    setPostData({ ...postData, image: fileLink })
+  }
+
   const onDrop = async e => {
     preventDefaults(e)
-    try {
-          
-
-    const body = new FormData()
-    body.append('file', e.dataTransfer.files[0])
-
-    const res = await fetch('https://forest.maxwofford.com/upload', {
-      body,
-      method: 'POST'
-    }).then(resp => resp.text());
-setFileLink(res)
-setPostData({ ...postData, url: fileLink })
-  } catch (err) {
-    console.error(err);
+    uploadFile(e.dataTransfer.files[0])
   }
-    // const files = e.dataTransfer.files
-    // const input = document.querySelector('.image-drop-input')
-    // input.files = files
-    // setDropping(false)
-    // const reader = new FileReader()
-    // reader.onloadend = function () {
-    //   setPostData({ ...postData, image: reader.result })
-    // }
-    // reader.readAsDataURL(files[0])
+
+  const onInput = async e => {
+    preventDefaults(e)
+    uploadFile(e.target.files[0])
   }
 
   const onClick = e => {
     const input = document.querySelector('.image-drop-input')
     input.click()
   }
-
-  const onInput = async e => {
-
-    preventDefaults(e)
-    e.preventDefault()
-    try {
-          
-
-    const body = new FormData()
-    body.append('file', e.target.files[0])
-
-    const res = await fetch('https://forest.maxwofford.com/upload', {
-      body,
-      method: 'POST'
-    }).then(resp => resp.text());
-
-    setFileLink(res)
-    setPostData({ ...postData, url: fileLink })
-  } catch (err) {
-    console.error(err);
-  }
-  //   const input = document.querySelector('.image-drop-input')
-  //   const files = input.files
-  //   setDropping(false)
-  //   const reader = new FileReader()
-  //   reader.onloadend = function () {
-  //     setPostData({ ...postData, url: fileLink })
-  //   }
-  //   reader.readAsDataURL(files[0])
-  }
-
 
   const shipIt = async (e, ship) => {
     setSubmissionSuccess('awaiting')
@@ -222,7 +219,6 @@ setPostData({ ...postData, url: fileLink })
                   name="img"
                   accept="image/*"
                   onInput={onInput}
-                
                 ></input>
               </div>
             </div>
