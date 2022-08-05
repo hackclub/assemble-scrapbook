@@ -122,7 +122,7 @@ export default function Page({ link, initialData, profile, users }) {
       const uploader = await fetch(
         'https://81pxefxko1.execute-api.us-east-1.amazonaws.com/default/assemble-images-uploader',
         {
-          body: { filename, contentType },
+          body: { fileName: filename, contentType },
           method: 'POST'
         }
       )
