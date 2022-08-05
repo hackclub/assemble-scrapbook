@@ -114,20 +114,43 @@ export default function Page({ link, initialData, profile, users }) {
   const onDrop = async e => {
     preventDefaults(e)
     try {
-          
+      const filename = e.dataTransfer.files[0].filename
+      const contentType = e.dataTransfer.files[0].contentType
 
-    const body = new FormData()
-    body.append('file', e.dataTransfer.files[0])
+      // Getting s3 upload link
+      const uploader = await fetch(
+        'https://81pxefxko1.execute-api.us-east-1.amazonaws.com/default/assemble-images-uploader',
+        {
+          body: { filename, contentType },
+          method: 'POST'
+        }
+      )
+        .then(resp => resp.json())
+        .then(json => {
+          if (!json.ok) {
+            throw Error('File upload request failed')
+          }
+          return json.url
+        })
 
-    const res = await fetch('https://forest.maxwofford.com/upload', {
-      body,
-      method: 'POST'
-    }).then(resp => resp.text());
-setFileLink(res)
-setPostData({ ...postData, url: fileLink })
-  } catch (err) {
-    console.error(err);
-  }
+      // Uploading file to s3 upload link
+      const body = new FormData()
+      body.append('file', e.dataTransfer.files[0])
+      await fetch(uploader, {
+        body,
+        method: 'PUT'
+      })
+        .then(resp => resp.json())
+        .then(json => {
+          if (!json.ok) {
+            throw Error('File upload to s3 failed')
+          }
+          setFileLink(json.url)
+          setPostData({ ...postData, url: fileLink })
+        })
+    } catch (err) {
+      console.error(err)
+    }
     // const files = e.dataTransfer.files
     // const input = document.querySelector('.image-drop-input')
     // input.files = files
@@ -145,35 +168,31 @@ setPostData({ ...postData, url: fileLink })
   }
 
   const onInput = async e => {
-
     preventDefaults(e)
     e.preventDefault()
     try {
-          
+      const body = new FormData()
+      body.append('file', e.target.files[0])
 
-    const body = new FormData()
-    body.append('file', e.target.files[0])
+      const res = await fetch('https://forest.maxwofford.com/upload', {
+        body,
+        method: 'POST'
+      }).then(resp => resp.text())
 
-    const res = await fetch('https://forest.maxwofford.com/upload', {
-      body,
-      method: 'POST'
-    }).then(resp => resp.text());
-
-    setFileLink(res)
-    setPostData({ ...postData, url: fileLink })
-  } catch (err) {
-    console.error(err);
+      setFileLink(res)
+      setPostData({ ...postData, url: fileLink })
+    } catch (err) {
+      console.error(err)
+    }
+    //   const input = document.querySelector('.image-drop-input')
+    //   const files = input.files
+    //   setDropping(false)
+    //   const reader = new FileReader()
+    //   reader.onloadend = function () {
+    //     setPostData({ ...postData, url: fileLink })
+    //   }
+    //   reader.readAsDataURL(files[0])
   }
-  //   const input = document.querySelector('.image-drop-input')
-  //   const files = input.files
-  //   setDropping(false)
-  //   const reader = new FileReader()
-  //   reader.onloadend = function () {
-  //     setPostData({ ...postData, url: fileLink })
-  //   }
-  //   reader.readAsDataURL(files[0])
-  }
-
 
   const shipIt = async (e, ship) => {
     setSubmissionSuccess('awaiting')
@@ -222,7 +241,6 @@ setPostData({ ...postData, url: fileLink })
                   name="img"
                   accept="image/*"
                   onInput={onInput}
-                
                 ></input>
               </div>
             </div>
