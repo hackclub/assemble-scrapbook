@@ -134,7 +134,7 @@ const Nav = ({ authStatus }) => {
         </div>
         <div>
           <p>
-            Hackathons provide a space to build projects with code—sto hone
+            Hackathons provide a space to build projects with code— to hone
             skills and pick up new concepts while getting hands-on. At Assemble,
             Scrapbook is a way for hackers to share the things they're making
             and inspire each other to do the same.
