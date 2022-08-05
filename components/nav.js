@@ -145,11 +145,13 @@ const Nav = ({ authStatus }) => {
             There are 2 types of posts:
             <ul style={{ marginLeft: '24px' }}>
               <li>
-                a <strong>scrap</strong> is a "work in progress" post
+                a <strong style={{ color: 'var(--colors-blue)' }}>scrap</strong>{' '}
+                is a "work in progress" post
               </li>
               <li>
-                a <strong>ship</strong> is a way to share a completed project
-                which will be used for exhibition
+                a <strong style={{ color: 'var(--colors-red)' }}>ship</strong>{' '}
+                is a way to share a completed project which will be used for
+                exhibition
               </li>
             </ul>
           </p>
