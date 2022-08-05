@@ -9,38 +9,44 @@ export default function HackBoard() {
     <>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(15, 1fr);' }}>
         {[...Array(amount).keys()].map(x => (
-          <div style={{ height: '10vh', position: 'relative' }}>
-            {data &&
-              data[x] &&
-              (data[x].url.slice(-4) == 'm3u8' ? (
-                <video
+          <div
+            style={{
+              height: '10vh',
+              position: 'relative', 
+              display: data ? data[x]?.url ? 'block' : 'none' :'none'
+            }}
+          >
+            {data && (
+              <div
+                style={{
+                  width: 'calc(100vw / 15)',
+                  height: '10vh',
+                  objectFit: 'cover'
+                }}
+              >
+                <small
+                  style={{
+                    position: 'absolute',
+                    top: 5,
+                    left: 5,
+                    background: 'rgba(0, 0, 0, 0.5)',
+                    borderRadius: '8px',
+                    padding: '0px 4px',
+                    display: data ? data[x]?.username ? 'block' : 'none' :'none'
+                  }}
+                >
+                  @{data[x]?.username}
+                </small>
+                <img
+                  src={data[x]?.url}
                   style={{
                     width: 'calc(100vw / 15)',
                     height: '10vh',
                     objectFit: 'cover'
                   }}
-                  autoPlay
-                  muted
-                >
-                  <source src={data[x].url} type="application/x-mpegURL" />
-                </video>
-              ) : (
-                <div style={{
-                  width: 'calc(100vw / 15)',
-                  height: '10vh',
-                  objectFit: 'cover'
-                }}>
-                  <small style={{ position: 'absolute', top: 5, left: 5, background: 'rgba(0, 0, 0, 0.5)', borderRadius: '8px', padding: '0px 4px' }}>@{data[x].username}</small>
-                  <img
-                    src={data[x].url}
-                    style={{
-                      width: 'calc(100vw / 15)',
-                      height: '10vh',
-                      objectFit: 'cover'
-                    }}
-                  />
-                </div>
-              ))}
+                />
+              </div>
+            )}
           </div>
         ))}
       </div>
