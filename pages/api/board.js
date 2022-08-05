@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     url:
       x.stream?.status == 'active'
         ? `https://stream.mux.com/${x.stream?.playback_ids[0].id}.m3u8`
-        : x.updates[0].attachments[0]
+        : x.updates[0]?.attachments[0]
   }))
   res.json(data)
 }
