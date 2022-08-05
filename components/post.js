@@ -12,7 +12,7 @@ import dynamic from 'next/dynamic'
 import { emailToPfp } from '../lib/email'
 const Tooltip = dynamic(() => import('react-tooltip'), { ssr: false })
 import useSound from 'use-sound'
-import { mutate } from 'swr'
+import ClapButton from './clap-button'
 
 const zeroPad = (num, places) => String(num).padStart(places, '0')
 
@@ -67,7 +67,6 @@ function Post({
   muted = false,
   isShip,
   composing,
-  mutateFunc,
   collaborators,
   title
 }) {
@@ -157,25 +156,7 @@ function Post({
             </a>
           </Link>
           {!composing && (
-            <section
-              onClick={async () => {
-                play()
-                await fetch(`/api/clap?id=${id}`)
-                mutate('/api/posts')
-              }}
-              style={{
-                background: 'var(--colors-slate)',
-                padding: '8px',
-                borderRadius: '999px',
-                paddingTop: '10px'
-              }}
-              className="clap"
-            >
-              👏
-              <span style={{ marginLeft: '4px', marginRight: '3px' }}>
-                {claps}
-              </span>
-            </section>
+            <ClapButton id={id} initialClaps={claps} />
           )}
         </span>
       )}
