@@ -114,8 +114,9 @@ export default function Page({ link, initialData, profile, users }) {
   const onDrop = async e => {
     preventDefaults(e)
     try {
-      const filename = e.dataTransfer.files[0].filename
-      const contentType = e.dataTransfer.files[0].contentType
+      console.log('File:', e.dataTransfer.files[0])
+      const filename = e.dataTransfer.files[0].name
+      const contentType = e.dataTransfer.files[0].type
 
       // Getting s3 upload link
       const uploader = await fetch(
@@ -134,11 +135,14 @@ export default function Page({ link, initialData, profile, users }) {
         })
 
       // Uploading file to s3 upload link
-      const body = new FormData()
-      body.append('file', e.dataTransfer.files[0])
+      // const body = new FormData()
+      // body.append('file', e.dataTransfer.files[0])
       await fetch(uploader, {
-        body,
-        method: 'PUT'
+        body: e.dataTransfer.files[0],
+        method: 'PUT',
+        headers: {
+          'Content-type': contentType
+        }
       })
         .then(resp => resp.json())
         .then(json => {
