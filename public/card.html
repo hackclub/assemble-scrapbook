@@ -185,17 +185,37 @@
         p.content {
             color: black;
             margin-top: 0px;
+            max-height: 237px;
+            line-break: anywhere;
         }
         img.primary {
             width: 100%;
+            height: 100%;
             max-height: 280px;
             border-radius: 12px;
             object-fit: contain;
+            box-sizing: border-box;
             object-position: center;
             background-color: #00000033;
+            background-size: contain;
+            background-position: center;
+            border: none;
+            background-repeat: no-repeat;
+        }
+        div.primary {
+            overflow-y: clip;
+            flex-grow: 1;
+            max-height: 280px;
+            background: var(--color-offwhite);
+            margin: -16px;
+            padding: 16px;
         }
         div.body {
             padding: 16px;
+            overflow-y: clip;
+            display: flex;
+            max-height: 400px;
+            flex-direction: column;
         }
         div.authors {
             width: 100%;
@@ -214,6 +234,24 @@
         body.scale6x {
             transform: scale(6) translate(41.67%, 41.67%);
         }
+        img.author:first-child {
+    margin-left: 0px;
+}
+img.author {
+    border-radius: 50%;
+    width: 30px;
+    vertical-align: text-bottom;
+    margin-left: 8px;
+}
+.authors2 {
+
+    height: 30px;
+    vertical-align: bottom;
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    transform: translateY(-50%);
+}
     </style>
 </head>
 <body>
@@ -225,12 +263,14 @@
                 ASSEMBLE
             </h1>
         </header> -->
-        <div class="authors">
-            <p><b>ian.m</b> at 11:42PM</p>
+        <div class="authors" style="position: relative; height: 46px;">
+            <p><span class="authors2"></span><span class="timestamp" style="position: absolute; top: 50%; right: 8px; transform: translate(-6px, -50%);">9:41 AM 1/1/1</span></p>
         </div>
         <div class="body">
             <p class="content"></p>
-            <img class="primary">
+            <div class="primary">
+                <img class="primary">
+            </div>
         </div>
         <footer>
             <div class="nfc-1"></div>
@@ -264,8 +304,13 @@
 
         async function fetchPost (number) {
             const response = await fetch('/api/numbered-post/' + encodeURIComponent(number)).then(response => response.json());
+            console.log(response);
             document.querySelector('p.content').innerHTML = response.parsedText;
             document.querySelector('img.primary').src = response.attachments[0];
+            console.log(response.postTime, new Date(response.postTime))
+            document.querySelector('.timestamp').innerText = new Date(response.postTime).toLocaleDateString() + ' ' + new Date(response.postTime).toLocaleTimeString(undefined, {hour: '2-digit', minute:'2-digit'})
+            document.querySelector('img.primary').style.backgroundImage = `url("${response.attachments[0]}")`;
+            document.querySelector('.authors2').innerHTML = response.users.map(url => `<img src="${url}" class="author" />`).join('');
         }
 
         fetchPost(params.id).then(() => {
