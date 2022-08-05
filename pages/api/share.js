@@ -9,26 +9,27 @@ const share = async (req, res) => {
   const cookies = new Cookies(req, res);
   try {
     const data = JSON.parse(req.body)
-    const { image, description, collaborators, title } = data
+    const { url, description, collaborators, title } = data
     const id = cookies.get('scrapbook_user_auth_id') || data.id;
 
-    let form = new FormData()
-    form.append(
-      'file',
-      Readable.from(Buffer.from(image.split(',')[1] ?? '', 'base64')),
-      `image.${image.substring('data:image/'.length, image.indexOf(';base64'))}`
-    )
-    const uploadResp = await fetch('https://bucky.hackclub.com', {
-      method: 'POST',
-      body: form
-    })
-    const uploadedUrl = await uploadResp.text()
-    const cdnResp = await fetch('https://cdn.hackclub.com/api/new', {
-      method: 'POST',
-      body: JSON.stringify([uploadedUrl])
-    })
-    const cdnUrl = (await cdnResp.json())[0]
-    console.log('uploaded url', cdnUrl)
+    // let form = new FormData()
+    // form.append(
+    //   'file',
+    //   Readable.from(Buffer.from(image.split(',')[1] ?? '', 'base64')),
+    //   `image.${image.substring('data:image/'.length, image.indexOf(';base64'))}`
+    // )
+    // const uploadResp = await fetch('https://bucky.hackclub.com', {
+    //   method: 'POST',
+    //   body: form
+    // })
+    // const uploadedUrl = await uploadResp.text()
+    // const cdnResp = await fetch('https://cdn.hackclub.com/api/new', {
+    //   method: 'POST',
+    //   body: JSON.stringify([uploadedUrl])
+    // })
+    // const cdnUrl = (await cdnResp.json())[0]
+    // console.log('uploaded url', cdnUrl)
+    const cdnUrl = url;
     let collaboratorsArray = collaborators
       .split(',')
       .map(x => x.replace('@', '').trim())

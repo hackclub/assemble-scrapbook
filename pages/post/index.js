@@ -32,6 +32,7 @@ export default function Page({ link, initialData, profile, users }) {
   const router = useRouter()
   const { id } = router.query
   const [dropping, setDropping] = useState(false)
+  const [fileLink, setFileLink] = useState('')
   const [postData, setPostData] = useState({
     image: '',
     description: '',
@@ -110,17 +111,32 @@ export default function Page({ link, initialData, profile, users }) {
     e.stopPropagation()
   }
 
-  const onDrop = e => {
+  const onDrop = async e => {
     preventDefaults(e)
-    const files = e.dataTransfer.files
-    const input = document.querySelector('.image-drop-input')
-    input.files = files
-    setDropping(false)
-    const reader = new FileReader()
-    reader.onloadend = function () {
-      setPostData({ ...postData, image: reader.result })
-    }
-    reader.readAsDataURL(files[0])
+    try {
+          
+
+    const body = new FormData()
+    body.append('file', e.dataTransfer.files[0])
+
+    const res = await fetch('https://forest.maxwofford.com/upload', {
+      body,
+      method: 'POST'
+    }).then(resp => resp.text());
+setFileLink(res)
+setPostData({ ...postData, url: fileLink })
+  } catch (err) {
+    console.error(err);
+  }
+    // const files = e.dataTransfer.files
+    // const input = document.querySelector('.image-drop-input')
+    // input.files = files
+    // setDropping(false)
+    // const reader = new FileReader()
+    // reader.onloadend = function () {
+    //   setPostData({ ...postData, image: reader.result })
+    // }
+    // reader.readAsDataURL(files[0])
   }
 
   const onClick = e => {
@@ -128,17 +144,36 @@ export default function Page({ link, initialData, profile, users }) {
     input.click()
   }
 
-  const onInput = e => {
+  const onInput = async e => {
+
     preventDefaults(e)
-    const input = document.querySelector('.image-drop-input')
-    const files = input.files
-    setDropping(false)
-    const reader = new FileReader()
-    reader.onloadend = function () {
-      setPostData({ ...postData, image: reader.result })
-    }
-    reader.readAsDataURL(files[0])
+    e.preventDefault()
+    try {
+          
+
+    const body = new FormData()
+    body.append('file', e.target.files[0])
+
+    const res = await fetch('https://forest.maxwofford.com/upload', {
+      body,
+      method: 'POST'
+    }).then(resp => resp.text());
+
+    setFileLink(res)
+    setPostData({ ...postData, url: fileLink })
+  } catch (err) {
+    console.error(err);
   }
+  //   const input = document.querySelector('.image-drop-input')
+  //   const files = input.files
+  //   setDropping(false)
+  //   const reader = new FileReader()
+  //   reader.onloadend = function () {
+  //     setPostData({ ...postData, url: fileLink })
+  //   }
+  //   reader.readAsDataURL(files[0])
+  }
+
 
   const shipIt = async (e, ship) => {
     setSubmissionSuccess('awaiting')
@@ -187,6 +222,7 @@ export default function Page({ link, initialData, profile, users }) {
                   name="img"
                   accept="image/*"
                   onInput={onInput}
+                
                 ></input>
               </div>
             </div>
@@ -202,6 +238,7 @@ export default function Page({ link, initialData, profile, users }) {
               label="So what are you up to in the image? Elaborate please..."
               id="project-description"
               type="textarea"
+              required="true"
               value={postData.description}
               onChange={e =>
                 setPostData({ ...postData, description: e.target.value })
