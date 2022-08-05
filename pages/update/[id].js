@@ -11,7 +11,7 @@ const Header = ({ reactions, children, theme }) => (
       as={Head}
       name="Scrapbook @ Assemble ~ Hack Club"
       title="Home"
-      description="A diary of everything Hack Clubbers get up to at Assemble."
+      description="A diary of everything hackers get up to at Assemble."
       image="https://cloud-53i932gta-hack-club-bot.vercel.app/0scrapbook.jpg"
     />
     <header>
@@ -34,8 +34,7 @@ const Header = ({ reactions, children, theme }) => (
         {theme ? theme : 'Scrapbook @ Assemble'}
       </h1>
       <p>
-        A diary of everything <a href="https://hackclub.com/">Hack Clubbers</a>{' '}
-        get up to at{' '}
+        A diary of everything hackers get up to at{' '}
         <Link href="https://assemble.hackclub.com" passHref>
           <a>Assemble</a>
         </Link>
