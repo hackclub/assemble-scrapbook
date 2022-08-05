@@ -74,7 +74,7 @@ const Nav = ({ authStatus }) => {
         <a className="nav-link nav-link-about">About</a>
       </Link>
       <a
-        href="https://github.com/hackclub/scrapbook"
+        href="https://github.com/hackclub/assemble-scrapbook"
         className="nav-link nav-link-github"
         title="GitHub"
       >
