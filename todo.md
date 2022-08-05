@@ -6,7 +6,8 @@
   - [ ] ship cards can generate
   - [ ] ship card design
 
-- [ ] update github link
+
+- [x] update github link
 - [x] never eat soggy eweetbix
 - [ ] edit 'hack clubbers' lines
 - [ ] about page should be a modal with new copy

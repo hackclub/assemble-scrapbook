@@ -269,8 +269,10 @@
         }
 
         fetchPost(params.id).then(() => {
-            window.status = 'ready';
-            window.AssembleScrapbookCardView__Ready = true;
+            document.querySelector('img.primary').onload = () => {
+                window.status = 'ready';
+                window.AssembleScrapbookCardView__Ready = true;
+            }
         });
     </script>
 </body>

@@ -1,13 +1,17 @@
 import prisma from '../../lib/prisma'
 import FormData from 'form-data'
 const { Readable } = require('stream')
+import Cookies from 'cookies';
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-const share = async req => {
+const share = async (req, res) => {
+  const cookies = new Cookies(req, res);
   try {
     const data = JSON.parse(req.body)
-    const { image, description, id, collaborators, title } = data
+    const { image, description, collaborators, title } = data
+    const id = cookies.get('scrapbook_user_auth_id') || data.id;
+
     let form = new FormData()
     form.append(
       'file',
