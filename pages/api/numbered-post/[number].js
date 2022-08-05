@@ -41,7 +41,7 @@ export default async (req, res) => {
             emailToPfp(prismaOutput[0].Accounts.email)
         ];
         prismaOutput[0].collaborators?.forEach(collaborator => {
-            prismaOutput[0].users.push(emailToPfp(collaborator.Accounts.email));
+            prismaOutput[0].users.push(collaborator?.Accounts?.email && emailToPfp(collaborator?.Accounts?.email));
         });
         prismaOutput[0].parsedText = md.renderInline(prismaOutput[0].text);
         res.json(prismaOutput[0]);
