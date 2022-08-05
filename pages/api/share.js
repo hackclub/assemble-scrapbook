@@ -2,6 +2,8 @@ import prisma from '../../lib/prisma'
 import FormData from 'form-data'
 const { Readable } = require('stream')
 
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+
 const share = async req => {
   try {
     const data = JSON.parse(req.body)
@@ -66,6 +68,7 @@ const share = async req => {
         }
       }
     })
+    await wait(1000); // this might help
     return { ok: true, error: null, postNumber: postNumber + 1 }
   } catch (error) {
     console.log(error)
