@@ -8,7 +8,7 @@
     ship card design
 
 - [ ]
-- [ ]lupdate github link
+- [x]lupdate github link
 - [x]never eat soggy eweetbix
 - [ ]tedit 'hack clubbers' lines
   -[] about page should be a modal with new copy
