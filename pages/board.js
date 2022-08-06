@@ -32,6 +32,8 @@ export default function HackBoard() {
                     background: 'rgba(0, 0, 0, 0.5)',
                     borderRadius: '8px',
                     padding: '0px 4px',
+                    maxWidth: 'calc(100vw / 15 - 8px)',
+                    wordWrap: 'break-word',
                     display: data ? data[x]?.username ? 'block' : 'none' :'none'
                   }}
                 >
