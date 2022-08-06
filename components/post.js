@@ -171,7 +171,7 @@ function Post({
                 <>@{collab}</>
               </Link>{' '}
               {collaborators[index + 1] && (
-                <>{collaborators[index + 2] ? ',' : '&'}</>
+                <>{collaborators[index + 2] ? ',' : '& '}</>
               )}
             </>
           ))}

@@ -13,7 +13,6 @@ const md = markdownIt({
  export const emailToPfp = email => {
      if (email == "") return "";
 
-    console.log('emailtopfp', email);
     if (!email) return '';
      return "https://www.gravatar.com/avatar/" + md5(email?.toLowerCase()?.trim()) + '?d=identicon&r=pg';
  }
