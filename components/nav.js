@@ -23,7 +23,13 @@ const modalStyles = {
   }
 }
 
-const Join = ({ authStatus }) => (
+const Join = ({ authStatus }) => {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    if (window.innerWidth < 500) setMobile(true);
+    else setMobile(false);
+  }, []);
+  return (
   <>
     {authStatus.status != 'authed' ? (
       <a href="/login/" className="badge">
@@ -46,7 +52,7 @@ const Join = ({ authStatus }) => (
       </a>
     ) : (
       <a href="/post" className="badge">
-        Post To Your Scrapbook
+        Post {!mobile && 'To Your Scrapbook'}
         <style jsx>{`
           a {
             background-color: var(--colors-purple);
@@ -66,6 +72,7 @@ const Join = ({ authStatus }) => (
     )}
   </>
 )
+}
 
 const Nav = ({ authStatus }) => {
   const { pathname } = useRouter()
