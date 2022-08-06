@@ -8,6 +8,7 @@ export default function HackBoard() {
   return (
     <>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(15, 1fr);' }}>
+        <h1 style={{position: 'absolute', bottom: 16, left: 16}}>scrapbook.assemble.hackclub.com</h1>
         {[...Array(amount).keys()].map(x => (
           <div
             style={{
