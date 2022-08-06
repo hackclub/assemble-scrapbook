@@ -4,11 +4,11 @@ const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 export default function HackBoard() {
   let amount = 20
-  const { data, error } = useSWR('/api/board', fetcher)
+  const { data, error } = useSWR('/api/board', fetcher, { refreshInterval: 1000 })
   return (
     <>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(15, 1fr);' }}>
-        <h1 style={{position: 'absolute', bottom: 16, left: 16}}>scrapbook.assemble.hackclub.com</h1>
+        <h1 style={{position: 'absolute', bottom: 16, left: 16, fontSize: '72px'}}>scrapbook.assemble.hackclub.com</h1>
         {[...Array(amount).keys()].map(x => (
           <div
             style={{
