@@ -3,7 +3,7 @@ import useSWR from 'swr'
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 export default function HackBoard() {
-  let amount = 20
+  let amount = 150
   const { data, error } = useSWR('/api/board', fetcher, { refreshInterval: 1000 })
   return (
     <>
