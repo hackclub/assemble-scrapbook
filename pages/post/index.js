@@ -31,6 +31,7 @@ const submissionSuccessOptions = {
 export default function Page({ link, initialData, profile, users }) {
   const router = useRouter()
   const { id } = router.query
+  const [uploadIsLoading, setUploadIsLoading] = useState(false)
   const [dropping, setDropping] = useState(false)
   const [fileLink, setFileLink] = useState('')
   const [postData, setPostData] = useState({
@@ -112,6 +113,7 @@ export default function Page({ link, initialData, profile, users }) {
   }
 
   const uploadFile = async file => {
+    setUploadIsLoading(true)
     const fileName = file.name
     const contentType = file.type
 
@@ -152,9 +154,10 @@ export default function Page({ link, initialData, profile, users }) {
     }
 
     console.log('Done!', fileUrl)
+    setUploadIsLoading(false)
 
     setFileLink(fileUrl)
-    setPostData({ ...postData, image: fileLink })
+    setPostData({ ...postData, image: fileUrl, url: fileUrl })
   }
 
   const onDrop = async e => {
@@ -192,6 +195,7 @@ export default function Page({ link, initialData, profile, users }) {
       .filter(x => x != 'collaborators' && x != 'title')
       .every(x => postData[x] !== '')
 
+
   return (
     <div>
       <div className="grid">
@@ -210,8 +214,14 @@ export default function Page({ link, initialData, profile, users }) {
                 onDrop={onDrop}
                 onClick={onClick}
               >
+                {uploadIsLoading ?
+                  'Loading...'
+                  :  
+              <>
                 {postData.image != '' && '☑️ Uploaded!'} Drop or click to add
                 {postData.image != '' && ' new'} image here.
+                </>
+                  }
                 <input
                   className="image-drop-input"
                   type="file"
