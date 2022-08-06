@@ -9,7 +9,8 @@ const share = async (req, res) => {
   const cookies = new Cookies(req, res);
   try {
     const data = JSON.parse(req.body)
-    const { url, description, collaborators, title } = data
+    const { image, description, collaborators, title } = data
+    const url = image
     const id = cookies.get('scrapbook_user_auth_id') || data.id;
 
     // let form = new FormData()

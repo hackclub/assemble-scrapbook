@@ -154,7 +154,7 @@ export default function Page({ link, initialData, profile, users }) {
     console.log('Done!', fileUrl)
 
     setFileLink(fileUrl)
-    setPostData({ ...postData, image: fileLink })
+    setPostData({ ...postData, image: fileUrl, url: fileUrl })
   }
 
   const onDrop = async e => {
