@@ -51,7 +51,7 @@ module.exports = withMDX({
       },
       {
         source: '/s/:post',
-        destination: '/card.html'
+        destination: '/judging/:post'
       }
     ]
   },
