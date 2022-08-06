@@ -21,9 +21,10 @@ const Header = ({ reactions, children, theme }) => (
           style={{
             fontFamily: 'Shrikhand',
             backgroundImage: `radial-gradient( ellipse farthest-corner at top left, var(--colors-yellow), var(--colors-green) )`,
-            backgroundRepeat: `no-repeat`,
-            backgroundClip: `text`,
-            color: `transparent`,
+            backgroundRepeat: 'no-repeat',
+            backgroundClip: 'text',
+            '-webkit-background-clip': 'text',
+            color: 'transparent',
             fontSize: '28px'
           }}
         >
