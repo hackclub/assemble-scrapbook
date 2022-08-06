@@ -292,6 +292,7 @@ img.author {
                 prop === 'id' ? location.href.split('/').filter(s => s?.length).pop() : null
             ),
         });
+        
 
         document.querySelector('img.qr').src = `https://api.qrserver.com/v1/create-qr-code/?format=svg&qzone=3&size=120x120&ecc=M&margin=10&color=ffffff&bgcolor=c0362c&data=https://as.hack.af/s/${params.id}`;
         document.querySelector('div.nfc-text').innerText = params.id.padStart(3, '0');
@@ -319,6 +320,11 @@ img.author {
                 window.AssembleScrapbookCardView__Ready = true;
             }
         });
+
+        setTimeout(() => {
+            window.status = 'ready';
+            window.AssembleScrapbookCardView__Ready = true;
+        }, 10000);
     </script>
 </body>
 </html>
