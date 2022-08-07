@@ -20,7 +20,6 @@ module.exports = withMDX({
   },
   async rewrites() {
     return [
-      { source: '/', destination: '/404' },
       { source: '/summer', destination: '/r/summer-of-making' },
       {
         source: '/attachments/:path*{/}?',
