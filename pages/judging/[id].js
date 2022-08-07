@@ -284,7 +284,7 @@ export async function getServerSideProps(ctx) {
   if (cookies.get('assemble-judging') !== undefined) {
     reaction = await prisma.reactions.findFirst({
       where: {
-        cookie: cookies.get('assemble-judging').toString(),
+        cookie: cookies.get('assemble-judging'),
         updateId: update.id
       }
     })
