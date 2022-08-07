@@ -197,16 +197,8 @@ const UserPage = props => {
 
 export default UserPage
 
-export const getStaticPaths = async () => {
-  const { getUsernames } = require('../api/usernames')
-  let usernames = await getUsernames({
-    take: 75
-  })
-  const paths = usernames.map(username => ({ params: { username } }))
-  return { paths, fallback: true }
-}
 
-export const getStaticProps = async ({ params }) => {
+export const getServerSideProps = async ({ params }) => {
   const { getProfile, getPosts } = require('../api/users/[username]/index')
   if (params.username?.length < 2)
     return console.error('No username') || { props: {} }
@@ -218,11 +210,10 @@ export const getStaticProps = async ({ params }) => {
   try {
     const posts = await getPosts(profile)
     return {
-      props: { profile, posts },
-      revalidate: 1
+      props: { profile, posts }
     }
   } catch (error) {
     console.error(error)
-    return { props: { profile }, revalidate: 1 }
+    return { props: { profile } }
   }
 }

@@ -138,11 +138,9 @@ const Mentions = props => {
 
 export default Mentions
 
-export const getStaticPaths = async () => {
-  return { paths: [], fallback: true }
-}
 
-export const getStaticProps = async ({ params }) => {
+
+export const getServerSideProps = async ({ params }) => {
   const { getProfile, getMentions } = require('../api/users/[username]/index')
   if (params.username?.length < 2)
     return console.error('No username') || { props: {} }
@@ -154,11 +152,10 @@ export const getStaticProps = async ({ params }) => {
   try {
     const posts = await getMentions(profile)
     return {
-      props: { profile, posts },
-      revalidate: 1
+      props: { profile, posts }
     }
   } catch (error) {
     console.error(error)
-    return { props: { profile }, revalidate: 1 }
+    return { props: { profile } }
   }
 }
