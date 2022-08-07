@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   }
   let judging = await prisma.reactions.findFirst({
     where: {
-      cookie: cookies.get('assemble-judging') || random,
+      cookie: cookies.get('assemble-judging')?.toString() || random,
       updateId: req.query.update
     }
   })
