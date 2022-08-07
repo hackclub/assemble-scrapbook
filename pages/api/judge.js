@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   if(judging == null){
     judging = await prisma.reactions.create({
       data: {
-        cookie: cookies.get('assemble-judging') || random,
+        cookie: cookies.get('assemble-judging')?.toString() || random?.toString(),
         updateId: req.query.update,
         emoji: req.body.emoji
       }
