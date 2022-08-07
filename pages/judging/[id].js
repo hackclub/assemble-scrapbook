@@ -4,7 +4,7 @@ import Picker from '@emoji-mart/react'
 import { useState } from 'react'
 import Cookies from 'cookies'
 
-export default function Judging({ update, reaction, emojiArray, colorEmojis }) {
+export default function Judging({ update, reaction }) {
   const [emojiState, setEmojiState] = useState(0)
   const [selected, setSelected] = useState({
     1: reaction?.emoji[0] || '❓',
@@ -190,61 +190,47 @@ export default function Judging({ update, reaction, emojiArray, colorEmojis }) {
           }}
           custom={[
             {
-              id: 'slack',
-              name: 'Slack',
+              id: 'github',
+              name: 'GitHub',
               emojis: [
-                ...emojiArray
+                {
+                  id: 'octocat',
+                  name: 'Octocat',
+                  keywords: ['github'],
+                  skins: [
+                    {
+                      src: 'https://emoji.slack-edge.com/T0266FRGM/jankman/09159ada2ee32987.png'
+                    }
+                  ]
+                },
+                {
+                  id: 'shipit',
+                  name: 'Squirrel',
+                  keywords: ['github'],
+                  skins: [
+                    {
+                      src: 'https://emoji.slack-edge.com/T0266FRGM/see/3d0731c7ba6f4af1.png'
+                    }
+                  ]
+                }
               ]
             },
             {
-              id: 'slack-colors',
-              name: 'Colors',
+              id: 'gifs',
+              name: 'GIFs',
               emojis: [
-                ...colorEmojis
+                {
+                  id: 'party_parrot',
+                  name: 'Party Parrot',
+                  keywords: ['dance', 'dancing'],
+                  skins: [
+                    {
+                      src: 'https://emoji.slack-edge.com/T0266FRGM/party-dinosaur/d6219c5b10086a16.gif'
+                    }
+                  ]
+                }
               ]
             }
-            // {
-            //   id: 'github',
-            //   name: 'GitHub',
-            //   emojis: [
-            //     {
-            //       id: 'octocat',
-            //       name: 'Octocat',
-            //       keywords: ['github'],
-            //       skins: [
-            //         {
-            //           src: 'https://emoji.slack-edge.com/T0266FRGM/jankman/09159ada2ee32987.png'
-            //         }
-            //       ]
-            //     },
-            //     {
-            //       id: 'shipit',
-            //       name: 'Squirrel',
-            //       keywords: ['github'],
-            //       skins: [
-            //         {
-            //           src: 'https://emoji.slack-edge.com/T0266FRGM/see/3d0731c7ba6f4af1.png'
-            //         }
-            //       ]
-            //     }
-            //   ]
-            // },
-            // {
-            //   id: 'gifs',
-            //   name: 'GIFs',
-            //   emojis: [
-            //     {
-            //       id: 'party_parrot',
-            //       name: 'Party Parrot',
-            //       keywords: ['dance', 'dancing'],
-            //       skins: [
-            //         {
-            //           src: 'https://emoji.slack-edge.com/T0266FRGM/party-dinosaur/d6219c5b10086a16.gif'
-            //         }
-            //       ]
-            //     }
-            //   ]
-            // }
           ]}
         />
       </div>
@@ -258,20 +244,7 @@ export default function Judging({ update, reaction, emojiArray, colorEmojis }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const cookies = new Cookies(ctx.req, ctx.res);
-  const { check } = require('../api/get-auth-state.js');
-  const authed = await check(ctx.req, ctx.res);
-  if (!authed) {
-    cookies.set('assemble_continue', '/judging/' + ctx.params.id, {
-      overwrite: true,
-      expires: new Date(Date.now() + 1000 * 60 * 10),
-      httpOnly: true,
-    });
-    ctx.res.statusCode = 302
-    ctx.res.setHeader('Location', `/login`);
-    ctx.res.end();
-    return {props: {}}
-  }
+  const cookies = new Cookies(ctx.req, ctx.res)
   let reaction = await prisma.reactions.findFirst({
     where: {
       cookie: cookies.get('assemble-judging')
@@ -289,29 +262,6 @@ export async function getServerSideProps(ctx) {
   let emojis = await fetch('http://badger-zeta.vercel.app/api/emoji').then(r =>
     r.json()
   )
-  console.log(reaction);
-  const colorEmojis = [];
-  const emojiArray = (() => {
-    const values = Object.values(emojis);
-    return Object.keys(emojis).map((key, i) => {
-      return {
-        id: key.toLowerCase(),
-        name: key,
-        keywords: [key.toLowerCase(), ...key.split('_'), ...key.split('-')],
-        skins: [
-          {
-            src: values[i]?.startsWith('alias:') ? emojis[values[i].substring(6)] : values[i]
-          }
-        ]
-      };
-    }).filter(key => {
-      const filter = !(+key.name >= 0 && +key.name <= 200000 && key.name.length == 6) &&
-      !(key.name.startsWith('color_')) &&
-      !(key.name.startsWith('balloon_')) &&
-      !(key.name.startsWith('p_'));
-      if (!filter) colorEmojis.push(key); // push all of the color emojis to their own section
-      return filter;
-    })
-  })();
-  return { props: { update, emojis, reaction, emojiArray, colorEmojis } }
+  console.log(reaction)
+  return { props: { update, emojis, reaction } }
 }
