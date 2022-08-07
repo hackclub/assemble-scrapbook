@@ -35,7 +35,7 @@ export default function Judging({ update, reaction }) {
         width="400px"
         style={{ marginBottom: '12px', borderRadius: '8px' }}
       />
-      <h1>Select Up To Five Emojis To Describe XXX</h1>
+      <h1>Select Up To Five Emojis To Describe The Project</h1>
       <div
         style={{
           margin: 'auto',
@@ -63,9 +63,9 @@ export default function Judging({ update, reaction }) {
           className="clap"
         >
           {selected[1].native ||
-           ((selected[1].src || selected[1].includes('http')) && (
-            <img src={selected[1].src || selected[1]} height="40px" />
-          )) ||
+            ((selected[1].src || selected[1].includes('http')) && (
+              <img src={selected[1].src || selected[1]} height="40px" />
+            )) ||
             selected[1]}
         </span>
         <span
@@ -147,14 +147,17 @@ export default function Judging({ update, reaction }) {
           className="clap"
         >
           {selected[5].native ||
-           ((selected[5].src || selected[5].includes('http')) && (
-            <img src={selected[5].src || selected[5]} height="40px" />
-          )) ||
+            ((selected[5].src || selected[5].includes('http')) && (
+              <img src={selected[5].src || selected[5]} height="40px" />
+            )) ||
             selected[5]}
         </span>
-       
       </div>
-      {saved && <><br />✅ Saved!</>}
+      {saved && (
+        <>
+          <br />✅ Saved!
+        </>
+      )}
       <div
         style={{
           position: 'absolute',
@@ -245,11 +248,7 @@ export default function Judging({ update, reaction }) {
 
 export async function getServerSideProps(ctx) {
   const cookies = new Cookies(ctx.req, ctx.res)
-  let reaction = await prisma.reactions.findFirst({
-    where: {
-      cookie: cookies.get('assemble-judging')
-    }
-  })
+  console.log(cookies.get('assemble-judging'))
   let update = await prisma.updates.findFirst({
     where: {
       postNumber: parseInt(ctx.params.id)
@@ -259,6 +258,18 @@ export async function getServerSideProps(ctx) {
       reactions: true
     }
   })
+
+  let reaction
+  if (cookies.get('assemble-judging') !== undefined) {
+    reaction = await prisma.reactions.findFirst({
+      where: {
+        cookie: cookies.get('assemble-judging'),
+        updateId: update.id
+      }
+    })
+  } else {
+    reaction = null
+  }
   let emojis = await fetch('http://badger-zeta.vercel.app/api/emoji').then(r =>
     r.json()
   )
