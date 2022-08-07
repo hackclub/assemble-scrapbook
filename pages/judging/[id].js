@@ -4,18 +4,20 @@ import Picker from '@emoji-mart/react'
 import { useState } from 'react'
 import Cookies from 'cookies'
 
-export default function Judging({ update, reaction }) {
+export default function Judging({ update, reaction, emojiArray, colorEmojis }) {
   const [emojiState, setEmojiState] = useState(0)
   const [selected, setSelected] = useState({
-    1: reaction?.emoji[0] || '❓',
-    2: reaction?.emoji[1] || '❓',
-    3: reaction?.emoji[2] || '❓',
-    4: reaction?.emoji[3] || '❓',
-    5: reaction?.emoji[4] || '❓'
+    1: reaction?.emoji[0] || 'Select An Emoji',
+    2: reaction?.emoji[1] || 'Select An Emoji',
+    3: reaction?.emoji[2] || 'Select An Emoji',
+    4: reaction?.emoji[3] || 'Select An Emoji',
+    5: reaction?.emoji[4] || 'Select An Emoji'
   })
   const [saved, setSaved] = useState(false)
+  const [loaded, setLoaded] = useState(true)
   function upload(selectedToUse) {
     setSaved(false)
+    setLoaded(false)
     fetch(`/api/judge?update=${update.id}`, {
       method: 'POST',
       headers: {
@@ -26,14 +28,61 @@ export default function Judging({ update, reaction }) {
       })
     }).then(r => {
       setSaved(true)
+      setLoaded(true)
     })
   }
   return (
     <div style={{ textAlign: 'center' }}>
+      {saved ? (
+        <div
+          style={{
+            background: '#1c7b52',
+            padding: '8px',
+            fontWeight: '800',
+            position: 'fixed',
+            top: 0,
+            width: '100vw'
+          }}
+        >
+          <h3>Emoji reactions saved!</h3>
+        </div>
+      ) : loaded ? (
+        <div
+          style={{
+            background: 'var(--colors-red)',
+            padding: '8px',
+            fontWeight: '800',
+            position: 'fixed',
+            top: 0,
+            width: '100vw'
+          }}
+        >
+          <h3>Scrapbook @ Assemble</h3>
+        </div>
+      ) :  (
+        <div
+          style={{
+            background: 'var(--colors-blue)',
+            padding: '8px',
+            fontWeight: '800',
+            position: 'fixed',
+            top: 0,
+            width: '100vw'
+          }}
+        >
+          <h3>Saving your reactions...</h3>
+        </div>
+      )}
+
       <img
         src={update.attachments[0]}
-        width="400px"
-        style={{ marginBottom: '12px', borderRadius: '8px' }}
+        width="100vw"
+        style={{
+          marginBottom: '12px',
+          maxHeight: '300px',
+          objectFit: 'cover',
+          width: '100vw'
+        }}
       />
       <h1>Select Up To Five Emojis To Describe The Project</h1>
       <div
@@ -41,10 +90,12 @@ export default function Judging({ update, reaction }) {
           margin: 'auto',
           display: 'grid',
           maxWidth: '500px',
-          gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
+          gridTemplateColumns: '1fr',
           fontSize: '32px',
           gap: '16px',
-          marginTop: '8px'
+          marginTop: '8px',
+          width: '90vw',
+          position: 'relative'
         }}
       >
         <span
@@ -153,14 +204,9 @@ export default function Judging({ update, reaction }) {
             selected[5]}
         </span>
       </div>
-      {saved && (
-        <>
-          <br />✅ Saved!
-        </>
-      )}
       <div
         style={{
-          position: 'absolute',
+          position: 'fixed',
           height: '100vh',
           top: 0,
           background: 'rgba(0, 0, 0, 0.5)',
@@ -193,53 +239,28 @@ export default function Judging({ update, reaction }) {
           }}
           custom={[
             {
-              id: 'github',
-              name: 'GitHub',
+              id: 'slack',
+              name: 'Slack',
               emojis: [
-                {
-                  id: 'octocat',
-                  name: 'Octocat',
-                  keywords: ['github'],
-                  skins: [
-                    {
-                      src: 'https://emoji.slack-edge.com/T0266FRGM/jankman/09159ada2ee32987.png'
-                    }
-                  ]
-                },
-                {
-                  id: 'shipit',
-                  name: 'Squirrel',
-                  keywords: ['github'],
-                  skins: [
-                    {
-                      src: 'https://emoji.slack-edge.com/T0266FRGM/see/3d0731c7ba6f4af1.png'
-                    }
-                  ]
-                }
+               ...emojiArray
               ]
             },
             {
-              id: 'gifs',
-              name: 'GIFs',
+              id: 'slack-colors',
+              name: 'Colors',
               emojis: [
-                {
-                  id: 'party_parrot',
-                  name: 'Party Parrot',
-                  keywords: ['dance', 'dancing'],
-                  skins: [
-                    {
-                      src: 'https://emoji.slack-edge.com/T0266FRGM/party-dinosaur/d6219c5b10086a16.gif'
-                    }
-                  ]
-                }
+                ...colorEmojis
               ]
             }
           ]}
         />
-      </div>
+      </div><br />
       <style>{`
       .emojiWrap > div > em-emoji-picker {
         margin: auto
+      }
+      .nav {
+        display: none!important
       }
       `}</style>
     </div>
@@ -274,5 +295,28 @@ export async function getServerSideProps(ctx) {
     r.json()
   )
   console.log(reaction)
-  return { props: { update, emojis, reaction } }
+  const colorEmojis = [];
+   const emojiArray = (() => {
+     const values = Object.values(emojis);
+     return Object.keys(emojis).map((key, i) => {
+       return {
+         id: key.toLowerCase(),
+         name: key,
+         keywords: [key.toLowerCase(), ...key.split('_'), ...key.split('-')],
+         skins: [
+           {
+             src: values[i]?.startsWith('alias:') ? emojis[values[i].substring(6)] : values[i]
+           }
+         ]
+       };
+     }).filter(key => {
+       const filter = !(+key.name >= 0 && +key.name <= 200000 && key.name.length == 6) &&
+       !(key.name.startsWith('color_')) &&
+       !(key.name.startsWith('balloon_')) &&
+       !(key.name.startsWith('p_'));
+       if (!filter) colorEmojis.push(key); // push all of the color emojis to their own section
+       return filter;
+     })
+   })();
+   return { props: { update, emojis, reaction, emojiArray, colorEmojis } }
 }

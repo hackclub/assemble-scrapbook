@@ -93,7 +93,7 @@ export async function getServerSideProps(ctx) {
         }
       })
       let makers = []
-      makers.push(x.Accounts.username)
+      makers.push(x.accountUsername)
       x.collaborators.map(y => {
         makers.push(y.accountUsername)
       })
