@@ -26,6 +26,7 @@ export default function Judging(props) {
           </div>
         </div>
       ))}
+      
       <h1 style={{ display: 'flex', padding: '32px' }}>Project-by-Project</h1>
       {props.toJudge.map(project => (
         <div key={project.id} style={{ display: 'flex', padding: '32px' }}>
@@ -50,7 +51,7 @@ export default function Judging(props) {
                 ) : (
                   x
                 )}
-                : {project.reactions[x]}
+                : {project.reactions[x]}<br />
               </div>
             ))}
           </div>
