@@ -31,7 +31,7 @@
     "markdown-it": "^13.0.1",
     "md5": "^2.3.0",
     "next": "^12.2.2",
-    "next-auth": "^4.10.2",
+    "next-auth": "^4.10.3",
     "node-fetch": "^3.2.10",
     "nookies": "^2.5.2",
     "nprogress": "^0.2.0",
