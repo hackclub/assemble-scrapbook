@@ -11,7 +11,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@emoji-mart/data": "^1.0.3",
+    "@emoji-mart/data": "^1.0.5",
     "@emoji-mart/react": "^1.0.0",
     "@hackclub/icons": "^0.0.9",
     "@hackclub/meta": "^1.1.32",
