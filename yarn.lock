@@ -828,10 +828,10 @@ hastscript@^6.0.0:
     property-information "^5.0.0"
     space-separated-tokens "^1.0.0"
 
-hls.js@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.npmjs.org/hls.js/-/hls.js-1.1.5.tgz"
-  integrity sha512-mQX5TSNtJEzGo5HPpvcQgCu+BWoKDQM6YYtg/KbgWkmVAcqOCvSTi0SuqG2ZJLXxIzdnFcKU2z7Mrw/YQWhPOA==
+hls.js@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-1.2.2.tgz#b5ecf5e09e515a4465da015768e6857820ef9b6f"
+  integrity sha512-T+plugLYzBG+QCGEdL6qxyXZAc54zisJaR0o3KsZQ8j/HveLeE+ouHd5sJOHvE9hvEyF3OffVP5EvDWnczdwXg==
 
 hoist-non-react-statics@^3.3.2:
   version "3.3.2"
