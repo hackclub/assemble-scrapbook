@@ -651,10 +651,10 @@ ecdsa-sig-formatter@1.0.11:
   dependencies:
     safe-buffer "^5.0.1"
 
-emoji-mart@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/emoji-mart/-/emoji-mart-5.2.0.tgz#e6e30df81f75c6c5150f77a7c6714e05c3798e45"
-  integrity sha512-0ZTIbemlRjEV0ydF8lDqho2N5l4M7qdNFWGp+w3v32D+F6+DYsmuaZr/k4O79EBvqlDx6rx+B8jeaH2qa0ZNDQ==
+emoji-mart@^5.3.2:
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/emoji-mart/-/emoji-mart-5.3.2.tgz#37579c12696528018dbf7cc27fe188bab246da7b"
+  integrity sha512-og6K4jYkZITe8pnFPHdFE576Tc6fCFl8JPhl98jRunH3bDulk3iqA+6Ue0iUZ/L/GWzLf9XME9QnpBd53N5YTg==
 
 emojis-list@^3.0.0:
   version "3.0.0"
