@@ -285,10 +285,10 @@
   resolved "https://registry.npmjs.org/@mdx-js/util/-/util-1.6.22.tgz"
   integrity sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==
 
-"@mux/mux-node@^6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@mux/mux-node/-/mux-node-6.0.0.tgz#9e94bc98ad92fcec4a723626cb7af217b9133986"
-  integrity sha512-WD5jbz1QGU1qXYBe21p2TX6nFI/yt4t98NSlLBmHdRVCyIKupPJuCqrJMB1E8zw6+gR7fw5R2+3yY+6bTYIeHA==
+"@mux/mux-node@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@mux/mux-node/-/mux-node-7.0.0.tgz#92857e18d928ffeb555baddab2c31be22d90628e"
+  integrity sha512-E93ccloWppuwi35twqrcuC1p2hiFKEFfoKTRGZnXp9gz7a31BzXfywSwbJzDUtssgdwiK3n9Ej/nSRcj72Tqwg==
   dependencies:
     axios "^0.26.1"
     esdoc-ecmascript-proposal-plugin "^1.0.0"
