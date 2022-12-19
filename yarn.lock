@@ -218,10 +218,10 @@
   resolved "https://registry.yarnpkg.com/@emoji-mart/data/-/data-1.0.5.tgz#62c837f1384eb2f94bec4c0dcfe8d230cc67e81d"
   integrity sha512-HulW+jI7w3ghqRN4+i1LZYJ04bdsMJg5fJ7dr6rlVpsIYKmhpVA7/ACl9R3OB5aoMf8dqNdXftVss8qHCoOi+g==
 
-"@emoji-mart/react@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@emoji-mart/react/-/react-1.0.0.tgz#485ffef5c34f0cde04ecb2820f150a483744346e"
-  integrity sha512-pRZ+e0uWJKVpUBcALevyjnp14HUFG/7p+XsUqNAkz322ruPzyDQ7/qUNONU0KGjQF71O4OIoFdvDPcxVpx1/xg==
+"@emoji-mart/react@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@emoji-mart/react/-/react-1.1.0.tgz#afeaac086c951a0b6d782ff461955be1c9904706"
+  integrity sha512-6MnXNSfR69hmgH/mZIux4NGAjmS90f+rtJu8Soq1rCb27JWmYCQLAP7BqOVPUN4BL+c4ONUK+PPPihQho0eIxg==
 
 "@hackclub/icons@^0.0.9":
   version "0.0.9"
